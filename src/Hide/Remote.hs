@@ -522,6 +522,9 @@ runRemoteDaemonWithStartup browserOwner owned wake session scale effects tick in
                   writeIORef settledFrame (acknowledged s)
                 when changed $
                   writePacket connection (BinaryPacket (BL.toStrict (framePacket reset oldRows rows (if reset then metadata else filter (`notElem` oldMeta) metadata))))
+                -- Reuse the cache itself on idle polls. Rewrapping its lazy
+                -- rows/metadata retains a chain of all previous frame snapshots.
+                retainedFrame<-evaluate (if sameFrame then previous else Just (key,resetKey,rows,metadata,scene))
                 let (nextTransfers,canvasPackets,moreCanvas)=canvasTransfer transfers scene
                 mapM_ (writePacket connection) canvasPackets
                 let awaitReply =
@@ -547,7 +550,7 @@ runRemoteDaemonWithStartup browserOwner owned wake session scale effects tick in
                     forM_ packets $ \packet->do
                       current<-readTVarIO live
                       when (current || not (maybe False ("system-one-" `T.isPrefixOf`) (packetType packet))) (writePacket connection packet)
-                    if any ((==Just "closed") . packetType) packets then void (tryPutMVar done ()) else send nextTransfers (Just (key,resetKey,rows,metadata,scene))
+                    if any ((==Just "closed") . packetType) packets then void (tryPutMVar done ()) else send nextTransfers retainedFrame
                   Just Nothing -> do
                     -- An MCP Exit has no display input to carry its close. Flush
                     -- accepted input replies first, then acknowledge and close.
@@ -555,7 +558,7 @@ runRemoteDaemonWithStartup browserOwner owned wake session scale effects tick in
                     writePacket connection (json "ack" ["seq" .= acknowledged final,"dirty" .= webDirty (desktop final)])
                     writePacket connection (json "closed" [])
                     void (tryPutMVar done ())
-                  Nothing -> send nextTransfers (Just (key,resetKey,rows,metadata,scene))
+                  Nothing -> send nextTransfers retainedFrame
           -- The chunk reader remains cancellable with a partial packet and an
           -- open Windows peer. Join it before the outer owner sends an error;
           -- shutting down both socket directions here would discard that reply.

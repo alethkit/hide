@@ -194,6 +194,7 @@ tests = askOption $ \profile->withResource
 #ifdef WITH_REMOTE
   , testCase "Remote" RemoteCheck.checks
   , testCase "Remote.parent-open" RemoteCheck.parentOpenChecks
+  , testCase "Remote.idle-collection" RemoteCheck.idleCollectionChecks
   , testCase "RemoteWindow" RemoteWindowCheck.checks
   , testCase "RemoteTerminal" (RemoteTerminalCheck.checks profile)
   , testCase "GuestAccess" GuestAccessCheck.checks

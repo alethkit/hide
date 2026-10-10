@@ -30,7 +30,7 @@ import qualified Hide.SystemOneBrowser as DecisionBrowser
 import Control.Concurrent.Async (withAsync)
 import Control.Concurrent.MVar
 import Control.Concurrent.STM
-import Control.Exception (finally, bracket, try)
+import Control.Exception (finally, bracket, try, evaluate)
 import Control.Monad (forever, when, void, foldM)
 import Data.Aeson
 import qualified Data.Aeson.KeyMap as KM
@@ -145,6 +145,9 @@ runWeb inference scale effects tick initial = do
             reset=maybe True (\(_,old,_,_,_)->old/=resetKey) previous
         when (reset || (not sameFrame && (rows/=oldRows || metadata/=oldMetadata))) $
           WS.sendBinaryData conn (framePacket reset oldRows rows (if reset then metadata else filter (`notElem` oldMetadata) metadata))
+        -- Keep the existing cache on idle polls instead of chaining lazy
+        -- selectors through a new tuple that retains every earlier snapshot.
+        retainedFrame<-evaluate (if sameFrame then previous else Just (key,resetKey,rows,metadata,scene))
         let (nextTransfers,canvasPackets,moreCanvas)=canvasTransfer transfers scene
         mapM_ (\packet->case packet of JsonPacket value->send value; BinaryPacket bytes->WS.sendBinaryData conn bytes) canvasPackets
         let nextEvent=(Just . Left <$> readTBQueue inferenceQueue) `orElse` readTBQueue queue
@@ -169,7 +172,7 @@ runWeb inference scale effects tick initial = do
               Just (serial,_) -> send (object ["type" .= ("ack"::T.Text),"seq" .= serial,"dirty" .= webDirty updated])
               Nothing -> pure ()
             if exit then send (object ["type" .= ("closed"::T.Text)]) >> void (tryPutMVar done ())
-              else loop canvasEpoch nextTransfers pasteReads conn send queue inferenceQueue disconnected (Just (key,resetKey,rows,metadata,scene)) updated
+              else loop canvasEpoch nextTransfers pasteReads conn send queue inferenceQueue disconnected retainedFrame updated
       effect _ _ _ result@(True,_) _ = pure result
       effect _ _ _ (_,d) (FollowLink origin _) | not (linkOriginCurrent d origin)=pure (False,d {status="Link body expired."})
       effect pasteReads _ send (_,d) (FollowLink origin target) = do

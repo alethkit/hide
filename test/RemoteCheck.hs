@@ -7,7 +7,7 @@
 -- Stability   : experimental
 -- Portability : CPP, OverloadedStrings, ScopedTypeVariables
 --
-module RemoteCheck (checks, parentOpenChecks) where
+module RemoteCheck (checks, parentOpenChecks, idleCollectionChecks) where
 import Control.Concurrent.STM (atomically, retry)
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.MVar
@@ -31,6 +31,9 @@ import System.Posix.Files (setFileMode)
 import Data.List (isInfixOf)
 #endif
 import System.Timeout (timeout)
+import System.Mem (performGC)
+import System.Mem.Weak (mkWeakPtr, deRefWeak)
+import Data.Maybe (isNothing)
 import System.FilePath ((</>))
 import System.Exit (ExitCode)
 import qualified Hide.App as App
@@ -65,6 +68,56 @@ isolatedStore action=do
   bracket (do (path,h)<-openTempFile temp "thc-session-tests"; hClose h; removeFile path; createDirectory path; pure path)
     removePathForcibly $ \path -> bracket_ (setEnv "XDG_DATA_HOME" path)
       (maybe (unsetEnv "XDG_DATA_HOME") (setEnv "XDG_DATA_HOME") old) action
+
+-- An unchanged display must release retired snapshots just as a redraw does.
+-- The marker is deliberately nonvisual, so no-op frame receipts say False.
+idleCollectionChecks :: IO ()
+idleCollectionChecks = isolatedStore $ do
+  session<-randomIdentity
+  endpoint<-sessionEndpoint session
+  retired<-newEmptyMVar
+  let initial=initialDesktop (80,25)
+      effects d _=pure (False,d)
+      inspectSnapshot d _ (Bool retain)=do
+        marker<-if retain then randomIdentity else pure ""
+        _<-evaluate (length marker)
+        if retain then mkWeakPtr marker Nothing >>= putMVar retired else pure ()
+        pure (False,d {launchDirectory=marker},pure (Just Null))
+      inspectSnapshot d _ _=pure (False,d,pure (Just Null))
+      ready=bracket (connectEndpoint endpoint) hClose (const (pure ()))
+        `catch` \(_::IOException)->threadDelay 1000 >> ready
+      receive peer serial=do
+        packet<-peerReceive peer
+        case packet of
+          Just (JsonPacket (Object fields))
+            | KM.lookup "type" fields==Just (String "frame-ready"),
+              KM.lookup "seq" fields==Just (toJSON (serial::Int))->pure (KM.lookup "changed" fields)
+          Just _->receive peer serial
+          Nothing->error "Idle collection display disconnected"
+      capture value=bracket (connectEndpoint endpoint) hClose $ \h->do
+        writePacket h (JsonPacket (object ["type" .= ("inspect"::T.Text),"request" .= value]))
+        void (readPacket h)
+      settle peer serial=do
+        peerSend peer (JsonPacket (object ["type" .= ("modifiers"::T.Text),"mods" .= ([]::[T.Text]),"seq" .= (serial::Int)]))
+        changed<-receive peer serial
+        unless (changed==Just (Bool False)) (error "Idle collection unexpectedly repainted")
+  withAsync (runRemoteDaemon session 1 effects pure inspectSnapshot initial) $ \daemon->do
+    link daemon
+    timeout 3000000 ready >>= \result->unless (result==Just ()) (error "Idle collection endpoint unavailable")
+    withLocalPeer session True [] $ \peer->do
+      outcome<-timeout 5000000 $ do
+        void (receive peer 0)
+        capture True
+        settle peer 1
+        capture False
+        settle peer 2
+        -- Advance again: the sender may still hold the just-settled iteration.
+        settle peer 3
+        weak<-takeMVar retired
+        performGC
+        gone<-isNothing <$> deRefWeak weak
+        unless gone (error "Unchanged frame cache retains retired desktop snapshots")
+      unless (outcome==Just ()) (error "Idle collection receipt timed out")
 
 -- The actual CLI talks to a live, already attached session. An invalid backend
 -- guards against accidentally opening a visible frontend in this check.
