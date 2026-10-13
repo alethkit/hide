@@ -41,6 +41,7 @@ import qualified PluginMenuCheck
 import qualified AccessibilityCheck
 import qualified SidebarCheck
 import qualified PluginTreeCheck
+import qualified PluginInspectCheck
 import qualified PluginCommandCheck
 import qualified DocsMCPCheck
 import qualified EnvironmentCheck
@@ -208,6 +209,7 @@ tests = askOption $ \profile->withResource
   , testCase "PluginBuffer" PluginBufferCheck.checks
   , testCase "Accessibility" AccessibilityCheck.checks
   , testCase "PluginTree" PluginTreeCheck.checks
+  , testCase "PluginInspect" PluginInspectCheck.checks
   , testCase "Sidebar" SidebarCheck.checks
   , testCase "PluginCommand" PluginCommandCheck.checks
   , testCase "PluginMenu" PluginMenuCheck.checks

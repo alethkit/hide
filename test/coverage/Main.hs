@@ -41,6 +41,7 @@ import qualified PluginCommandCheck
 import qualified PluginFormCheck
 import qualified PluginMenuCheck
 import qualified PluginTreeCheck
+import qualified PluginInspectCheck
 import qualified GuestAccessCheck
 import qualified LinksCheck
 import qualified HelpCheck
@@ -66,6 +67,7 @@ main = defaultMainWithIngredients
   , testCase "PluginForm" PluginFormCheck.checks
   , testCase "PluginMenu" PluginMenuCheck.checks
   , testCase "PluginTree" PluginTreeCheck.checks
+  , testCase "PluginInspect" PluginInspectCheck.checks
   , testCase "GuestAccess" GuestAccessCheck.checks
   , testCase "Links" LinksCheck.checks
   , testCase "Help" HelpCheck.checks

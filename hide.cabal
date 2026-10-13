@@ -431,6 +431,7 @@ test-suite editor-tests
     , PluginBufferCheck
     , PluginCommandCheck
     , PluginTreeCheck
+    , PluginInspectCheck
     , AccessibilityCheck
     , SidebarCheck
     , SidebarFixture
@@ -535,6 +536,7 @@ test-suite coverage-smoke
     , PluginFormCheck
     , PluginMenuCheck
     , PluginTreeCheck
+    , PluginInspectCheck
     , GuestAccessCheck
     , LinksCheck
     , HelpCheck
@@ -563,3 +565,19 @@ test-suite coverage-smoke
     , tasty >=1.5.4 && <1.6
     , tasty-hunit >=0.10.2 && <0.11
     , tasty-ant-xml >=1.1.9 && <1.2
+
+-- The inspector checks need no test framework, so they run in an offline
+-- checkout: cabal test hide:test:inspector-checks
+test-suite inspector-checks
+  import: settings
+  type: exitcode-stdio-1.0
+  hs-source-dirs:
+      test/inspector
+    , test
+  main-is: Main.hs
+  other-modules:
+      PluginInspectCheck
+  build-depends:
+      hide
+    , hide-plugin-api ==0.1.0.0
+    , aeson
