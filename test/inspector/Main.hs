@@ -10,7 +10,8 @@
 -- 'error', so a failure is a nonzero exit status.
 module Main (main) where
 
+import qualified InspectorWindowCheck
 import qualified PluginInspectCheck
 
 main :: IO ()
-main=PluginInspectCheck.checks
+main=PluginInspectCheck.checks >> InspectorWindowCheck.checks
