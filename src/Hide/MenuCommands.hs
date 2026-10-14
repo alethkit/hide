@@ -386,7 +386,8 @@ tickMenus host@(MenuHost menus _ sourceRefs _ ref closed conversation) core orig
         Just result->do
           modifyIORef' ref (\s->s {menuPending=Nothing})
           live<-Plugin.menuCurrent menus reference
-          let exactRow=case result of Right (Right PreparedDownloadCancel{})->invocationOrigin context==Plugin.HumanMenu && invocationRow context/=Nothing; _->False
+          let exactRow=case result of Right (Right PreparedDownloadCancel{})->humanRow; Right (Right PreparedWindow{})->humanRow; _->False
+              humanRow=invocationOrigin context==Plugin.HumanMenu && invocationRow context/=Nothing
               current=dialog d==Nothing && (not exactRow || reference `elem` windowRowMenuRefsFor target d) && (exactRow || columns d==invocationColumns context) &&
                 any ((==reference) . Plugin.menuReference) (contributedMenus d) &&
                 maybe True (\captured->contextTargetCurrent d {contextTarget=Just captured}) target

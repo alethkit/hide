@@ -224,6 +224,7 @@ library
     , Hide.PackageSidebar
     , Hide.PackageInspect
     , Hide.InspectorWindow
+    , Hide.InspectorMenu
     , Hide.ProjectBrowser
     , Hide.BuildJobs
     , Hide.TextPresentation
@@ -577,9 +578,13 @@ test-suite inspector-checks
       test/inspector
     , test
   main-is: Main.hs
+  -- Build jobs wait on child processes; the non-threaded RTS would block every
+  -- thread in waitForProcess, so the infinite fake benchmark could never be stopped.
+  ghc-options: -threaded -rtsopts
   other-modules:
       PluginInspectCheck
     , InspectorWindowCheck
+    , PackageSidebarCheck
   build-depends:
       hide
     , hide-plugin-api ==0.1.0.0

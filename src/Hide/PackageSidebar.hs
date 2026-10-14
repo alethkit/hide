@@ -37,7 +37,10 @@ import Text.Read (readMaybe)
 import Hide.GuestAccess (protectedFilePath)
 import Hide.Model (Desktop(..),Effect(..),BuildAction(..),PackageBuildTarget(..),startingDirectory,privateFilePaths)
 import Hide.PackagePaths
+import Hide.InspectorWindow (Inspector,inspectorPublisher',inspectorViews,inspectSubject)
+import Hide.PackageInspect (componentSubject)
 import Hide.PackageSources
+import Hide.Plugin.Inspect (InspectContext(..),RootDef(..),Revision(..),publishRoot,rootSubject,subjectRevision)
 import Hide.Plugin.Command
 import qualified Hide.Plugin.Tree as P
 import Hide.Sidebar (treeRoot)
@@ -64,8 +67,8 @@ scope d=(maybe (startingDirectory d) treeRoot (sideTree d),privateFilePaths d)
 
 -- | Observe only package files in the selected directory. Project-file globs and
 -- configured multi-directory package discovery are separate from this service.
-withPackageSidebar :: SidebarHost -> Desktop -> (PackageSidebar -> IO a) -> IO a
-withPackageSidebar host initial use=withRegistry $ \registry->do
+withPackageSidebar :: Inspector -> SidebarHost -> Desktop -> (PackageSidebar -> IO a) -> IO a
+withPackageSidebar inspector host initial use=withRegistry $ \registry->do
   desired<-newIORef (scope initial)
   dirty<-newIORef M.empty
   slots<-newIORef []
@@ -86,7 +89,7 @@ withPackageSidebar host initial use=withRegistry $ \registry->do
             forM_ [slot | slot@(Slot file _ _ _ _)<-current,file `notElem` admitted] retire
             let retained=[slot | slot@(Slot file _ _ _ _)<-current,file `elem` admitted]
             created<-forM (zip [next..] [file | file<-admitted,all (\(Slot old _ _ _ _)->old/=file) retained]) $ \(serial,file)->do
-              slot<-createSlot registry root private serial file
+              slot<-createSlot inspector registry root private serial file
               let Slot _ provider _ _ _=slot
               publishTreeFromHost host provider
               pure slot
@@ -178,8 +181,8 @@ safePath root private path
 packageTitle :: FilePath -> Either Text PackageSources -> Text
 packageTitle file=T.take 256 . T.filter (>= ' ') . either (const (T.pack (takeFileName file))) sourcePackageName
 
-createSlot :: Registry SidebarContext -> FilePath -> [FilePath] -> Int -> FilePath -> IO Slot
-createSlot registry root _private serial file=do
+createSlot :: Inspector -> Registry SidebarContext -> FilePath -> [FilePath] -> Int -> FilePath -> IO Slot
+createSlot inspector registry root _private serial file=do
   initialStamp<-stamp file
   parsed<-readPackage file
   ref<-newIORef (Snapshot 0 initialStamp parsed M.empty)
@@ -225,6 +228,22 @@ createSlot registry root _private serial file=do
                 reply<-evaluate (SidebarBuild action target)
                 pure (Right reply)
           _->pure (Left (CommandRejected "Package build target changed or is not a human action."))) >>= required
+  -- The inspector reads this package through its cheap snapshot: the revision is
+  -- the tree's own version, and the root dies with the slot's commands.
+  inspectRoot<-publishRoot (inspectorPublisher' inspector) (RootDef (namespace<>".root") $ do
+    live<-commandCurrent registry (commandRef open)
+    Snapshot version _ package _<-readIORef ref
+    pure (case package of Right value | live->Just (Revision (toInteger version),value); _->Nothing)) >>= either (ioError . userError . show) pure
+  inspect<-registerCommand registry (CommandDef (namespace<>".inspect") "Inspect package" codec codec $ \ctx (version,target)->do
+    Snapshot current _ _ _<-readIORef ref
+    top<-rootSubject (inspectorViews inspector) inspectRoot
+    let chosen=top >>= \subject->maybe (Just subject) (componentSubject subject) target
+        fresh=maybe True (==current) version && maybe False ((==Revision (toInteger current)) . subjectRevision) top
+    case (sidebarOrigin ctx,chosen) of
+      (Menu.HumanMenu,Just subject) | fresh->do
+        opened<-inspectSubject inspector (InspectContext (sidebarOrigin ctx) (sidebarContextWorkspace ctx) (sidebarPrivatePaths ctx)) subject Nothing
+        pure (either (Left . CommandRejected) (Right . SidebarWindow) opened)
+      _->pure (Left (CommandRejected "Package inspection target changed or is not a human action."))) >>= required
   build<-registerBuild Make ".build" "Build component"
   run<-registerBuild Run ".run" "Run component"
   test<-registerBuild Test ".test" "Test component"
@@ -255,10 +274,12 @@ createSlot registry root _private serial file=do
         | (label,buildAction,command)<-[("Build",Make,build),("Run",Run,run),("Test",Test,test),("Benchmark",Benchmark,benchmark)]
         , eligible buildAction component]++
         [P.ActionMenu "Debug" (P.treeAction registry debug (version,sourceTarget component) (\_ result->pure result))
-        | debugEligible component]
+        | debugEligible component]++
+        [P.ActionMenu "Inspect" (P.treeAction registry inspect (Just version,Just (sourceTarget component)) (\_ result->pure result))]
       action version path=P.treeAction registry open (Just version,path) (\_ result->pure result)
       rootNode=P.NodeDef (P.NodeInfo rootId title "" True (Just file)) Nothing
-        [P.ActionMenu "Open package file" (P.treeAction registry open (Nothing,file) (\_ result->pure result))]
+        [P.ActionMenu "Open package file" (P.treeAction registry open (Nothing,file) (\_ result->pure result))
+        ,P.ActionMenu "Inspect" (P.treeAction registry inspect (Nothing,Nothing) (\_ result->pure result))]
       children ctx (P.ChildRequest key cursor)=do
         Snapshot version _ package cached<-readIORef ref
         case pageOffset cursor of
@@ -285,7 +306,7 @@ createSlot registry root _private serial file=do
                 storeCache ref version key nodes
                 pure (Right (P.NodePage (take 128 (drop offset nodes)) (if null (drop (offset+128) nodes) then Nothing else Just (T.pack (show (offset+128))))))
   provider<-P.registerTree registry namespace rootNode children >>= required
-  pure (Slot file provider [commandRef open,commandRef build,commandRef run,commandRef test,commandRef benchmark,commandRef debug] ref ids)
+  pure (Slot file provider [commandRef open,commandRef inspect,commandRef build,commandRef run,commandRef test,commandRef benchmark,commandRef debug] ref ids)
   where required=either (ioError . userError . show) pure
 
 -- Entry selection is a worker operation. File existence cannot select a Cabal

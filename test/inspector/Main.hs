@@ -11,7 +11,8 @@
 module Main (main) where
 
 import qualified InspectorWindowCheck
+import qualified PackageSidebarCheck
 import qualified PluginInspectCheck
 
 main :: IO ()
-main=PluginInspectCheck.checks >> InspectorWindowCheck.checks
+main=PluginInspectCheck.checks >> InspectorWindowCheck.checks >> PackageSidebarCheck.checks

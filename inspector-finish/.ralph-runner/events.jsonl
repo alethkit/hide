@@ -1,0 +1,2 @@
+{"type":"runner.started","timestamp":"2026-10-14T08:38:41.356Z","loopToken":"710b8514-571d-4f58-86e7-313663f90a26","cwd":"/sandbox/hide","taskDir":"/sandbox/hide/inspector-finish","status":"initializing","maxIterations":1,"timeout":1800,"guardrails":{"blockCommands":[],"protectedFiles":[]}}
+{"type":"iteration.started","timestamp":"2026-10-14T08:38:41.365Z","iteration":1,"loopToken":"710b8514-571d-4f58-86e7-313663f90a26","status":"running","maxIterations":1,"timeout":1800,"completionPromise":"DONE"}

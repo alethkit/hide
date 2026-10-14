@@ -33,7 +33,10 @@ import System.Timeout (timeout)
 import System.Info (os)
 import qualified Hide.Files
 import Hide.Files (filePath)
+import Hide.InspectorWindow (withInspector,inspectorPublisher')
+import Hide.PackageInspect (publishPackageViews)
 import Hide.Model
+import qualified Data.Vector as V
 import Hide.PackageSidebar
 import qualified Hide.Plugin.Tree as P
 import qualified Hide.Plugin.Window as W
@@ -48,7 +51,7 @@ checks=bracket temporary removePathForcibly $ \root->do
   writeFile mainFile "main = pure ()\n"
   withEnv "XDG_CONFIG_HOME" (Just (root </> "config")) $ withEnv "THC_EDIT_SESSION" Nothing $ withSidebarCommands $ \host->withSessionServices $ \runtime->do
     let initial=(initialDesktop (100,35)) {sideTree=Just (emptySidebar root 28 False)}
-    withPackageSidebar host initial $ \provider->do
+    withInspector $ \inspector->publishPackageViews (inspectorPublisher' inspector) >>= \_->withPackageSidebar inspector host initial $ \provider->do
       captured<-newIORef Nothing
       capturedDebug<-newIORef Nothing
       attempted<-newIORef False
@@ -74,8 +77,21 @@ checks=bracket temporary removePathForcibly $ \root->do
       mounted<-wait "package root" (has "sample") started
       targets<-activate "sample" mounted >>= wait "Cabal target" (has "exe:demo")
       let componentActions label=[title | row<-rows targets,P.infoLabel (rowInfo row)==label,(title,_)<-rowActions row]
-      unless ("Build" `elem` componentActions "exe:demo" && "Run" `elem` componentActions "exe:demo" && "Build" `elem` componentActions "lib:sample" && "Run" `notElem` componentActions "lib:sample" && componentActions "test:check"==["Build","Run","Test","Debug"] && componentActions "test:driver"==["Build","Test"] && componentActions "bench:measure"==["Build","Run","Benchmark","Debug"] && null (componentActions "exe:disabled"))
+      unless ("Build" `elem` componentActions "exe:demo" && "Run" `elem` componentActions "exe:demo" && "Build" `elem` componentActions "lib:sample" && "Run" `notElem` componentActions "lib:sample" && componentActions "test:check"==["Build","Run","Test","Debug","Inspect"] && componentActions "test:driver"==["Build","Test","Inspect"] && componentActions "bench:measure"==["Build","Run","Benchmark","Debug","Inspect"] && componentActions "exe:disabled"==["Inspect"])
         (fail "Cabal components expose only their supported captured actions")
+      -- Inspect is available on every component and opens a private rows window
+      -- of that component's typed declarations, through the same sidebar worker.
+      let inspectRow label d=case [row | row<-rows d,P.infoLabel (rowInfo row)==label] of
+            row:_->case [ref | (title,P.RegisteredAction ref)<-rowActions row,title=="Inspect"] of
+              reference:_->let trace=maybe [] (hitTrace (keyOf (rowHit row))) (sideTree d)
+                               (requested,effects)=runCommand (TreeCommand trace reference) d {sideTree=fmap (\tree->tree {treeFocused=True}) (sideTree d)}
+                           in snd <$> sidebarEffects host core requested effects
+              _->fail "Inspect action missing"
+            _->fail "Component row missing"
+          inspectorCaptions d=[[caption | W.WindowRow _ caption _<-V.toList entries] | prepared<-M.elems (pluginWindows d),W.RowsDetails entries _ _<-[W.preparedWindowRows prepared]]
+      inspected<-inspectRow "exe:demo" targets >>= wait "inspector window" (not . null . inspectorCaptions)
+      unless (any (\captions->"Main.hs (main)" `elem` captions) (inspectorCaptions inspected))
+        (fail ("Inspect shows the component's typed source declarations: "<>show (inspectorCaptions inspected)))
       sources<-activate "exe:demo" targets >>= wait "Cabal source" (\d->any (\row->P.infoLabel (rowInfo row)=="Main.hs" && rowDepth row==2) (rows d) && ready d)
       unless (has "Missing (missing)" sources && has "Paths_sample (generated)" sources)
         (fail ("Missing/generated sources stay visible without a build: "<>show (map (P.infoLabel.rowInfo) (rows sources))))

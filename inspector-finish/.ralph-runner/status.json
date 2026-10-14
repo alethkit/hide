@@ -1,0 +1,16 @@
+{
+  "loopToken": "710b8514-571d-4f58-86e7-313663f90a26",
+  "ralphPath": "/sandbox/hide/inspector-finish/RALPH.md",
+  "taskDir": "/sandbox/hide/inspector-finish",
+  "cwd": "/sandbox/hide",
+  "status": "running",
+  "currentIteration": 1,
+  "maxIterations": 1,
+  "timeout": 1800,
+  "completionPromise": "DONE",
+  "startedAt": "2026-10-14T08:38:41.356Z",
+  "guardrails": {
+    "blockCommands": [],
+    "protectedFiles": []
+  }
+}

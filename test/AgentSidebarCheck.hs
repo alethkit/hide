@@ -29,6 +29,7 @@ import System.FilePath ((</>))
 import System.IO (openTempFile,hClose)
 import System.Timeout (timeout)
 import GHC.Stack (HasCallStack,callStack,prettyCallStack)
+import Hide.InspectorWindow (withInspector,inspectorPublisher')
 import Hide.Autocomplete (withAutocomplete,autocompleteEffects,tickAutocomplete)
 import Hide.MCPPermissions (readAutocompleteFor)
 import qualified Hide.AgentUI
@@ -76,7 +77,7 @@ checks=withSystemOne $ \systemOne->bracket temporary removePathForcibly $ \root-
     rememberSession record
     environment "THC_EDIT_SESSION" (Just (sessionId record)) $ withSidebarCommands $ \host->C.withConsoles $ \consoles -> withConversationAt (Plugin.pluginAgentProvider Hide.AgentUI.plugin) (Just AgentTranscript.presentConversation) (Plugin.pluginPrimaryInput Hide.AgentUI.plugin) (Plugin.pluginChildInput Hide.AgentUI.plugin) consoles root $ \conversation->
       withDocsCommands $ \docs->withConversationMenuCommands docs conversation $ \menuHost->
-      withAutocomplete (Just (systemOneServices systemOne)) (Plugin.pluginCompletionProvider Hide.AgentUI.plugin) [tool | Plugin.CompletionTool tool<-Plugin.pluginTools Hide.AgentUI.plugin] (Plugin.pluginCompletionInput Hide.AgentUI.plugin) root $ \autocomplete->Plugin.withPlugins [Hide.AgentUI.plugin] (Plugin.Session (sidebarCapabilities host) (AgentDirectory.agentDirectory (AR.agentHub (conversationAgents conversation)) autocomplete) SidebarAgent (menuSidebarCapabilities menuHost host) sidebarConversation SidebarConversation sidebarConversationOperation Menu.cancelConversationAction sidebarSelectedAgent (systemOneServices systemOne)) $ do
+      withAutocomplete (Just (systemOneServices systemOne)) (Plugin.pluginCompletionProvider Hide.AgentUI.plugin) [tool | Plugin.CompletionTool tool<-Plugin.pluginTools Hide.AgentUI.plugin] (Plugin.pluginCompletionInput Hide.AgentUI.plugin) root $ \autocomplete->withInspector $ \inspector->Plugin.withPlugins [Hide.AgentUI.plugin] (Plugin.Session (sidebarCapabilities host) (AgentDirectory.agentDirectory (AR.agentHub (conversationAgents conversation)) autocomplete) SidebarAgent (menuSidebarCapabilities menuHost host) sidebarConversation SidebarConversation sidebarConversationOperation Menu.cancelConversationAction sidebarSelectedAgent (systemOneServices systemOne) (inspectorPublisher' inspector)) $ do
         createRequests<-newIORef []
         agentRequests<-newIORef []
         sessionRequests<-newIORef []
