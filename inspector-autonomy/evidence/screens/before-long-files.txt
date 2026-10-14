@@ -1,0 +1,40 @@
+  File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
+                   [←] ╔═[■]═══════════════════════════════════ Longtree.hs ════════════════════════════════════1═[↑]══╗
+ ▼ Files               ║module Longtree where                                                                          ▲
+ ├📁 dir01             ║answer :: Int                                                                                  █
+ ├📁 dir02             ║answer = 42                                                                                    ░
+ ├📁 dir03             ║                                                                                               ░
+ ├📁 dir04             ║                                                                                               ░
+ ├📁 dir05             ║                                                                                               ░
+ ├📁 dir06             ║                                                                                               ░
+ ├📁 dir07             ║                                                                                               ░
+ ├📁 dir08             ║                                                                                               ░
+ ├📁 dir09             ║                                                                                               ░
+ ├📁 dir10             ║                                                                                               ░
+ ├📁 dir11             ║                                                                                               ░
+ ├📁 dir12             ║                                                                                               ░
+ ├📁 dir13             ║                                                                                               ░
+ ├📁 dir14             ║                                                                                               ░
+ ├📁 dir15             ║                                                                                               ░
+ ├📁 dir16             ║                                                                                               ░
+ ├📁 dir17             ║                                                                                               ░
+ ├📁 dir18             ║                                                                                               ░
+ ├📁 dir19             ║                                                                                               ░
+ ├📁 dir20             ║                                                                                               ░
+ ├📁 dir21             ║                                                                                               ░
+ ├📁 dir22             ║                                                                                               ░
+ ├📁 dir23             ║                                                                                               ░
+ ├📁 dir24             ║                                                                                               ░
+ ├📁 dir25             ║                                                                                               ░
+ ├📁 dir26             ║                                                                                               ░
+ ├📁 dir27             ║                                                                                               ░
+ ├📁 dir28             ║                                                                                               ░
+ ├📁 dir29             ║                                                                                               ░
+ ├📁 dir30             ║                                                                                               ░
+ ├📁 dir31             ║                                                                                               ░
+ ├📁 dir32             ║                                                                                               ░
+ ├📁 dir33             ║                                                                                               ░
+ ├📁 dir34             ║                                                                                               ░
+ ├📁 dir35             ║                                                                                               ▼
+                       ╚═ 1:1 ◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
+ F1 Help | HLS: No handler for: SMethod_TextDocumentHover                                                         THC ▼ 

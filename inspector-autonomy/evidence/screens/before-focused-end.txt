@@ -1,0 +1,40 @@
+  File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
+                   [←] ┌─────────────────────────────────────── Longtree.hs ────────────────────────────────────1──────┐
+ ├📁 dir32            ▲│module Longtree where                                                                          │
+ ├📁 dir33            ░│answer :: Int                                                                                  │
+ ├📂 dir34            ░│answer = 42                                                                                    │
+ │└📄 f.txt           ░│                                                                                               │
+ ├📁 dir35            ░│                                                                                               │
+ ├📁 dir36            ░│                                                                                               │
+ ├📁 dir37            ░│                                                                                               │
+ ├📁 dir38            ░│                                                                                               │
+ ├📁 dir39            ░│                                                                                               │
+ ├📁 dir40            ░│                                                                                               │
+ ├📁 dir41            ░│                                                                                               │
+ ├📁 dir42            ░│                                                                                               │
+ ├📁 dir43            ░│                                                                                               │
+ ├📁 dir44            ░│                                                                                               │
+ ├📁 dir45            ░│                                                                                               │
+ ├📁 dir46            ░│                                                                                               │
+ ├📁 dir47            ░│                                                                                               │
+ ├📁 dir48            ░│                                                                                               │
+ ├📁 dir49            ░│                                                                                               │
+ ├📁 dir50            ░│                                                                                               │
+ ├📁 dir51            ░│                                                                                               │
+ ├📁 dir52            ░│                                                                                               │
+ ├📁 dir53            ░│                                                                                               │
+ ├📁 dir54            ░│                                                                                               │
+ ├📁 dir55            ░│                                                                                               │
+ ├📁 dir56            ░│                                                                                               │
+ ├📁 dir57            ░│                                                                                               │
+ ├📁 dir58            ░│                                                                                               │
+ ├📁 dir59            ░│                                                                                               │
+ ├📁 dir60            ░│                                                                                               │
+ ├📁 src              ░│                                                                                               │
+ └📄 longtree.cabal   ░│                                                                                               │
+ ▶ Sessions           ░│                                                                                               │
+ ▶ Debug              █│                                                                                               │
+ ▶ Watches            ░│                                                                                               │
+ ▶ Agents             ▼│                                                                                               │
+                       └───────────────────────────────────────────────────────────────────────────────────────────────┘
+ F1 Help | HLS: No handler for: SMethod_TextDocumentHover                                                         THC ▼ 
