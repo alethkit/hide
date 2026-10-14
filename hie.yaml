@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Edward Kmett
+# SPDX-License-Identifier: BSD-2-Clause OR Apache-2.0
+#
+# hie-bios cradle for Haskell Language Server; see docs/haskell.md.
+cradle:
+  cabal:
+    cabalProject: cabal.project.hls

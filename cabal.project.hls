@@ -1,0 +1,10 @@
+-- SPDX-FileCopyrightText: 2026 Edward Kmett
+-- SPDX-License-Identifier: BSD-2-Clause OR Apache-2.0
+
+-- Project file used by Haskell Language Server (selected by hie.yaml).
+-- It is the normal project with the optional frontends disabled, so that
+-- `cabal repl` solves where pkg-config has no libghostty-vt (see docs/haskell.md).
+import: cabal.project
+
+package hide
+  flags: -window -web -terminal

@@ -95,6 +95,55 @@ with a scripted client (not an LLM session) and writes
 `--fake-lsp` it runs against `test/fake-lsp.mjs` and writes
 `evidence.fake-lsp.json`, which is a regression run, never a real-HLS result.
 
+### Language server on hide itself
+
+hide's own checkout needs three things that a plain `cabal.project` does not
+give HLS, and one that a small machine adds. The files are committed:
+
+- `hie.yaml` selects `cabal.project.hls` for HLS's cradle (`cabal repl`).
+- `cabal.project.hls` imports `cabal.project` and builds `hide` with
+  `-window -web -terminal`. The `terminal` flag needs pkg-config
+  `libghostty-vt`; without that library the solver rejects both `+terminal` and
+  the manual flag's default, so `cabal repl` (and with it every HLS request)
+  failed with `No handler for: SMethod_TextDocumentHover`. The real build and
+  `cabal.project` are unchanged.
+- `tools/hls-env.sh` prints the environment under which HLS runs: a writable
+  `XDG_CACHE_HOME` (hie-bios and ghcide create `~/.cache/hie-bios` and
+  `~/.cache/ghcide`; where `~/.cache` is read-only this was
+  `createDirectory: permission denied`) and a `CABAL_CONFIG` that keeps cabal's
+  real package index and store when a session relocates `XDG_*_HOME` (the
+  session tools do; cabal then sees no store or index and cannot solve offline).
+  It also sets `GHCRTS="-A16m -c"` (override with `HIDE_HLS_RTS`): the editor
+  uses about 0.6 GB and HLS's default `-A128M` nursery peaks near 0.9 GB, which
+  an about 2 GB machine without swap cannot hold, so the kernel killed the
+  language server. Keep the cache directory on disk (`HIDE_HLS_HOME`; the
+  default is under `$TMPDIR`, which is RAM-backed on some systems).
+
+```sh
+export THC_EDIT_HLS=/sandbox/hls-ghcup/bin/haskell-language-server-wrapper   # HLS 2.14 for GHC 9.14.1
+export GHC_BIN=$HOME/.ghcup/bin/ghc
+export HIDE_HLS_HOME=/sandbox/hls-cache
+eval "$(tools/hls-env.sh --export)"
+haskell-language-server-wrapper -j1 src/Hide/Sidebar.hs   # once: warms the cradle (1 file worked)
+hide src/Hide/Sidebar.hs
+```
+
+Warm the cradle with the command-line server once: the first `cabal repl`
+compiles hide's local packages, which should not compete with a running editor
+for memory. Open a small leaf module first; HLS loads dependencies lazily and the
+first answers can take a while. Nothing is downloaded or installed. Free the
+RAM-backed `/tmp` of stale `improved-plan*.tmp`, `elaborated-plan*.tmp` and
+`ghc*_tmp_*` files that killed cabal runs leave behind if memory is tight.
+
+`node test/inspector-hls-hide.mjs` reproduces this setup (command-line warm-up,
+editor, `inspect_symbol` through `hide --mcp-editor`): it inspects
+`sectionIndices` in `src/Hide/Sidebar.hs`, follows its definition and a
+reference, goes Back, checks the lines against the checkout and writes
+`/sandbox/hide-hls-scripted-check.json`. It is a scripted regression, not an
+agent investigation. Only references inside the loaded module graph are found:
+HLS indexes the files it has loaded, so uses in modules that were never opened
+(for example `Hide.Render`) do not appear until they are loaded.
+
 ## Code actions
 
 Select source or place the cursor at a diagnostic, then choose **Code actions**.
