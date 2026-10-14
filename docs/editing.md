@@ -74,6 +74,29 @@ copies until the frontend closes, allowing the receiving application to finish
 reading them. Right-clicking a file in Files and choosing **Export saved copy…**
 continues to export its saved disk contents.
 
+## Sidebar sections
+
+The shared left sidebar stacks one section per provider: Files, then Sessions, Debug,
+Watches, Agents and each Cabal package. All sections share one scrolling list, so a
+long Files tree can push later sections below the window.
+
+- A scrollbar appears at the right edge of the sidebar whenever rows overflow, whether
+  or not the sidebar has focus. Click its arrows or track to page, or drag the thumb.
+- The top row of the sidebar reads **↓ N more sections** while section headers lie
+  below the visible rows. Click it to scroll the next hidden section to the top; it
+  disappears when every section header is visible. In a narrow sidebar it shortens
+  to **↓ N more**.
+- The mouse wheel scrolls the sidebar without moving focus. With the sidebar focused,
+  **Ctrl+Down** and **Ctrl+Up** select the next and previous section header,
+  **PageDown/PageUp** move ten rows, and **Home/End** select the first and last row.
+  The view follows the selection. The commands are
+  `hide.sidebar.next-section`, `hide.sidebar.previous-section`, `hide.sidebar.first`
+  and `hide.sidebar.last` in the `sidebar` binding context.
+- Collapsing a section, reloading a tree or resizing the window keeps the scroll
+  position inside the list, so the first rows reappear instead of leaving blank space.
+  Clicks and context menus act on the row you see after scrolling, and a reloaded
+  tree never applies an action to a row that has since changed.
+
 ## Cabal packages
 
 The sidebar shows each `.cabal` package in the selected directory as a separate

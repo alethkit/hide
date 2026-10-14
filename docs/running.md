@@ -88,8 +88,12 @@ including over SSH. Detaching the display leaves an active build or run intact.
 
 Cabal packages appear by name in the shared left sidebar, below Files, Sessions,
 Debug, Watches and Agents. For this repository, the package row is **hide**.
-Collapse **Files** if its contents push the package row out of view. There is no
-separate Packages entry in the Window menu.
+A long Files tree can push the package row out of view; collapsing Files is not
+necessary. The sidebar shows a scrollbar whenever its rows overflow and a
+**↓ N more sections** cue on its top row; click the cue, use the wheel, or focus
+the sidebar and press **Ctrl+Down** (or **End**) to reach the package row. See
+[Sidebar sections](editing.md#sidebar-sections). There is no separate Packages
+entry in the Window menu.
 
 Right-click the package row and choose **Inspect** to open its component list.
 Alternatively, expand the package row, right-click a component such as
