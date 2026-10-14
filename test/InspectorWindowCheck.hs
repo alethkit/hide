@@ -186,4 +186,5 @@ actionType :: RowAction -> Text
 actionType (Navigate subject)=T.pack (show (subjectType subject))
 actionType (ShowView subject _)=T.pack (show (subjectType subject))
 actionType (OpenPath _)="path"
+actionType OpenSite{}="site"
 actionType GoBack="back"

@@ -57,7 +57,7 @@ import qualified Hide.Plugin.Menu as Menu
 import qualified Hide.Plugin.Window as W
 import Hide.PluginWindowHost (adoptWindowUpdate)
 import Hide.SymbolInspect
-import Hide.Tooling (Tooling, toolingTool, humanToolingTool, locations)
+import Hide.Tooling (Tooling, toolingTool, humanToolingTool, locations, projectRoot)
 import System.Directory (canonicalizePath)
 import System.FilePath (addTrailingPathSeparator, takeExtension)
 import Data.List (isPrefixOf)
@@ -150,16 +150,19 @@ locateCaret d=case (activeWindow d,activeDocument d) of
   _->Left "Open a saved Haskell source file first."
 
 -- What the worker may read, captured immutably under the desktop's serialization.
-data Env = Env { envWorkspace :: FilePath, envPrivate :: [FilePath], envOpen :: M.Map FilePath Buffer }
+-- The roots are the editor's launch directory and the inspected file's project:
+-- sites elsewhere (library sources, other projects) are counted, never shown.
+data Env = Env { envProject :: FilePath, envRoots :: [FilePath], envPrivate :: [FilePath], envOpen :: M.Map FilePath Buffer }
 
-captureEnv :: Desktop -> IO Env
-captureEnv d=do
-  workspace<-canonicalizePath (startingDirectory d)
+captureEnv :: Desktop -> FilePath -> IO Env
+captureEnv d path=do
+  project<-projectRoot path >>= canonicalizePath
+  launch<-canonicalizePath (launchDirectory d)
   let open=M.fromList [(filePath f,documentBuffer doc) | (bid,doc)<-M.toList (buffers d),documentLabel doc==Nothing,textBuffer (documentBuffer doc),
         not (protectedBuffer d bid),Just f<-[documentFile doc]]
   private<-evaluate (privateFilePaths d)
   _<-evaluate (length private)
-  pure (Env workspace private open)
+  pure (Env project (nub [project,launch]) private open)
 
 -- Requests and the report ------------------------------------------------------
 
@@ -217,7 +220,7 @@ snippet :: Text -> Text
 snippet=T.take 200 . T.strip
 
 admitted :: Env -> FilePath -> Bool
-admitted env file=not (protectedFilePath (envPrivate env) file) && (file==envWorkspace env || addTrailingPathSeparator (envWorkspace env) `isPrefixOf` file)
+admitted env file=not (protectedFilePath (envPrivate env) file) && any (\root->file==root || addTrailingPathSeparator root `isPrefixOf` file) (envRoots env)
 
 readSource :: Env -> IORef (M.Map FilePath (Maybe Buffer)) -> FilePath -> IO (Maybe Buffer)
 readSource env cache file=case M.lookup file (envOpen env) of
@@ -243,7 +246,7 @@ buildReport env owner rid loc answers=do
         _->(Left "Missing answer.",Left "Missing answer.",Left "Missing answer.")
   (defs,omittedDefs)<-siteOutcome env "definition" definitions
   (refs,omittedRefs)<-siteOutcome env "reference" references
-  let report=Report rid owner (locBuffer loc) (locRevision loc) (envWorkspace env) (locPath loc) (locName loc) (locLine loc) (locColumn loc)
+  let report=Report rid owner (locBuffer loc) (locRevision loc) (envProject env) (locPath loc) (locName loc) (locLine loc) (locColumn loc)
         (hoverOutcome hover) defs refs (max omittedDefs omittedRefs)
   _<-evaluate (length (show report))
   pure report
@@ -313,7 +316,7 @@ startHuman si d=case locateCaret d of
     case reservation of
       Nothing->pure d {status="Too many symbol inspections are running."}
       Just rid->do
-        env<-captureEnv d
+        env<-captureEnv d (locPath loc)
         (started,waits)<-issue True si d loc
         let context=InspectContext Menu.HumanMenu (startingDirectory d) (privateFilePaths d)
         worker<-async (finishHuman si context env rid loc waits)
@@ -442,7 +445,7 @@ symbolTool si caller d _ arguments=case parseRequest arguments of
         case reservation of
           Nothing->refuse "Too many symbol inspections are running."
           Just rid->do
-            env<-captureEnv d
+            env<-captureEnv d (locPath loc)
             (started,waits)<-issue False si d loc
             pure (started,inspectAgent si owner env rid loc waits)
     ViewOf token view->use token (\page->case mkViewId view of
@@ -580,8 +583,9 @@ followAgent si owner d token row page=case jsonTarget (pageJSON page) row of
     else render si owner (Just token) (pageReport page) subject Nothing
   Just (OpenFile _)->pure (Left "File rows are not available through this tool.")
   Just (OpenAt path line column expected)->do
-    env<-captureEnv d
-    if not (admitted env path) then pure (Left "That location is outside the workspace or protected.") else do
+    st<-readIORef (siState si)
+    env<-maybe (pure Nothing) (fmap Just . captureEnv d . reportPath) (M.lookup (pageReport page) (reports st))
+    if maybe True (\known->not (admitted known path)) env then pure (Left "That location is outside the workspace or protected.") else do
       current<-currentLine d path line
       pure $ case current of
         Left err->Left err

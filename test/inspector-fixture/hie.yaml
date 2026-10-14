@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Edward Kmett
+# SPDX-License-Identifier: BSD-2-Clause OR Apache-2.0
+cradle:
+  cabal:
+    - path: "src"
+      component: "lib:hide-symbol-fixture"
+    - path: "app"
+      component: "exe:hide-symbol-fixture"

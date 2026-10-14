@@ -19,7 +19,7 @@
 -- client after their terminal response. Cancellation rejects further edits while
 -- awaiting that response; only an unresponsive transport is retired. Accepted
 -- batches survive later failure and are reported as partial.
-module Hide.Tooling (Tooling, toolingTool, humanToolingTool, locations, toolingTools, toolingToolNames, withTooling, withToolingClock, withToolingUsing, tickTooling, toolingEffects, completionItems, workspaceEdits, hoverText, diagnosticsCurrent) where
+module Hide.Tooling (Tooling, toolingTool, humanToolingTool, locations, projectRoot, toolingTools, toolingToolNames, withTooling, withToolingClock, withToolingUsing, tickTooling, toolingEffects, completionItems, workspaceEdits, hoverText, diagnosticsCurrent) where
 
 import Hide.Sidebar (treeFocused)
 import Control.Exception (bracket, try, IOException, onException, mask_, evaluate, finally, displayException)
