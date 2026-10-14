@@ -1,17 +1,16 @@
 ---
-max_iterations: 8
+max_iterations: 2
 timeout: 3300
 completion_promise: SIDEBAR_AUTONOMY_COMPLETE
 completion_gate: required
 stop_on_error: false
 required_outputs:
-  - inspector-autonomy/DESIGN.md
-  - inspector-autonomy/RESULTS.md
-  - inspector-autonomy/OPEN_QUESTIONS.md
-  - inspector-autonomy/RALPH_PROGRESS.md
-  - inspector-autonomy/evidence.json
-  - inspector-autonomy/evidence/tool-calls.jsonl
-  - test/inspector-sidebar-scroll.mjs
+  - DESIGN.md
+  - RESULTS.md
+  - OPEN_QUESTIONS.md
+  - RALPH_PROGRESS.md
+  - evidence.json
+  - evidence/tool-calls.jsonl
 commands:
   - name: build
     run: export HOME=/home/node GHC_BIN=/home/node/.ghcup/bin/ghc PATH=/home/node/.ghcup/bin:/home/node/.cabal/bin:$PATH && cabal build all --offline -j2 -f-window -f-web -f-terminal
@@ -58,6 +57,16 @@ guardrails:
 Work in the EXISTING checkout /sandbox/hide (iteration {{ ralph.iteration }} of {{ ralph.max_iterations }}).
 Read /sandbox/hide/AGENTS.md first: interaction-performance rules and the greenfield stance apply to your fix.
 Resume from `inspector-autonomy/RALPH_PROGRESS.md` if it exists; fresh iterations start with no memory.
+
+## RESUMED RUN — read first
+A previous 8-iteration run already implemented, tested, documented and committed the fix (commit f35eb96 and the
+`inspector-autonomy: ...` commits after it). Ralph's completion gate rejected its promise ONLY because `required_outputs`
+listed repo-relative paths, while Ralph resolves them under this task folder; that is now corrected (and
+`test/inspector-sidebar-scroll.mjs` is checked by the sidebar_scroll_ui acceptance command and the deliverables gate instead).
+Do NOT redo the work or re-run the investigation. In this run: confirm every acceptance command above is green on the
+current HEAD, confirm `git status` shows nothing uncommitted under src/test/docs/hide.cabal/inspector-autonomy (except
+.ralph-runner), no editor session is left, update RALPH_PROGRESS.md briefly, commit it by explicit path, and emit the
+completion promise. Do not alter the evidence transcript or screens. If anything is red, fix the root cause.
 
 ## The problem (known, from inspector-workflow/OPEN_QUESTIONS.md "found in iteration 3")
 `node test/inspector-ui-smoke.mjs` failed when the checkout's top-level directories multiplied: the shared left
