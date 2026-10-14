@@ -323,7 +323,7 @@
       "step": "view definitions",
       "request": {
         "action": "view",
-        "page": "81b580d9105b96fe763bb3e77f74bf08ca22e57aad13d598",
+        "page": "467af74273fdd6ba87b44cbd88dd9d673c254b8d810b1010",
         "view": "hide.symbol.definitions"
       },
       "ok": true,
@@ -336,7 +336,7 @@
       "step": "follow the definition row",
       "request": {
         "action": "follow",
-        "page": "5132ef38414c4d51a165551dd82e51934013a0a10ef37a4f",
+        "page": "5ea4d009b995417fb228a1dd0ae7ac2c81ade4c63aef8f53",
         "row": 0
       },
       "ok": true,
@@ -350,7 +350,7 @@
       "step": "open the definition location (verified against current text)",
       "request": {
         "action": "follow",
-        "page": "3e4949e4a7b0015b2242dfbc94f818112a515d9fbcaa8ade",
+        "page": "6513578b4f3f9d6f1038c4e392fb141f3d838faf35f3b76f",
         "row": 0
       },
       "ok": true,
@@ -360,7 +360,7 @@
       "step": "back from the definition site",
       "request": {
         "action": "back",
-        "page": "3e4949e4a7b0015b2242dfbc94f818112a515d9fbcaa8ade"
+        "page": "6513578b4f3f9d6f1038c4e392fb141f3d838faf35f3b76f"
       },
       "ok": true,
       "view": "hide.symbol.definitions",
@@ -372,7 +372,7 @@
       "step": "view references",
       "request": {
         "action": "view",
-        "page": "07080e0f79c0d6da569b048417244d2998f0e658b420d02d",
+        "page": "b1383484f2f230a973a870818965cb0c9b5ddf78478fa82a",
         "view": "hide.symbol.references"
       },
       "ok": true,
@@ -391,7 +391,7 @@
       "step": "follow reference row 0",
       "request": {
         "action": "follow",
-        "page": "c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4",
+        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
         "row": 0
       },
       "ok": true,
@@ -405,7 +405,7 @@
       "step": "open reference location app/Main.hs:5:27",
       "request": {
         "action": "follow",
-        "page": "6310a9d9b7749c1822f1ceeb07191cfb01816496713a4b62",
+        "page": "f08bf75e9878272cdca7e5e8901a7e8e68cdaa07bf93e08b",
         "row": 0
       },
       "ok": true,
@@ -415,7 +415,7 @@
       "step": "follow reference row 1",
       "request": {
         "action": "follow",
-        "page": "c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4",
+        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
         "row": 1
       },
       "ok": true,
@@ -429,7 +429,7 @@
       "step": "open reference location app/Main.hs:9:10",
       "request": {
         "action": "follow",
-        "page": "f9370cf1d41f66510b1ccb92c2cafac2f20bb7552e516c17",
+        "page": "408712bcae9232e3e637361c129d544c85c8e287c924486f",
         "row": 0
       },
       "ok": true,
@@ -439,7 +439,7 @@
       "step": "follow reference row 2",
       "request": {
         "action": "follow",
-        "page": "c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4",
+        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
         "row": 2
       },
       "ok": true,
@@ -453,7 +453,7 @@
       "step": "open reference location src/Shapes.hs:4:27",
       "request": {
         "action": "follow",
-        "page": "6c3f436b181fb1df33a82cd8347336ecdcb45ebfb5630a68",
+        "page": "5caa302ee3eb797bf842a97b097e254cca4eb36316edca4f",
         "row": 0
       },
       "ok": true,
@@ -463,7 +463,7 @@
       "step": "follow reference row 3",
       "request": {
         "action": "follow",
-        "page": "c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4",
+        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
         "row": 3
       },
       "ok": true,
@@ -477,7 +477,7 @@
       "step": "open reference location src/Shapes.hs:9:1",
       "request": {
         "action": "follow",
-        "page": "dca6c52142beac33a3f9988c0bd89e484ff1fdd1d3bf1f0c",
+        "page": "0d087ddcab7c1b63e069835319d7123849c562556846d839",
         "row": 0
       },
       "ok": true,
@@ -487,7 +487,7 @@
       "step": "follow reference row 4",
       "request": {
         "action": "follow",
-        "page": "c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4",
+        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
         "row": 4
       },
       "ok": true,
@@ -501,7 +501,7 @@
       "step": "open reference location src/Shapes.hs:10:1",
       "request": {
         "action": "follow",
-        "page": "a087ec223e690ad977dabd0b1c5bc42087ea67a5acd03b16",
+        "page": "7a8817da02c91c722ee0e9649890563bd6fb409c0eaf38c3",
         "row": 0
       },
       "ok": true,
@@ -511,7 +511,7 @@
       "step": "follow reference row 5",
       "request": {
         "action": "follow",
-        "page": "c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4",
+        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
         "row": 5
       },
       "ok": true,
@@ -525,7 +525,7 @@
       "step": "open reference location src/Shapes.hs:11:1",
       "request": {
         "action": "follow",
-        "page": "4aaa1a7787f1b66d3cdd4dc1a50e25fe501062919251a050",
+        "page": "bd34413af3c01f8b6f9893136bb4377841e4332e79764135",
         "row": 0
       },
       "ok": true,
@@ -535,7 +535,7 @@
       "step": "follow reference row 6",
       "request": {
         "action": "follow",
-        "page": "c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4",
+        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
         "row": 6
       },
       "ok": true,
@@ -549,7 +549,7 @@
       "step": "open reference location src/Shapes.hs:15:23",
       "request": {
         "action": "follow",
-        "page": "dc9aa20474bce109f13646b27440b8862faec3e91ae958ba",
+        "page": "1ab8a3d22700852e4aa85140a1fa0a2ec44eba4d34add253",
         "row": 0
       },
       "ok": true,
@@ -591,7 +591,7 @@
       "step": "old page after the buffer was edited",
       "request": {
         "action": "view",
-        "page": "c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4",
+        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
         "view": "hide.symbol.summary"
       },
       "ok": false,
