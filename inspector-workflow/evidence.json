@@ -1,15 +1,683 @@
 {
   "mode": "real-hls",
-  "realHls": false,
-  "renderedSymbolUI": false,
-  "registeredAgentTool": false,
-  "definitionFollowed": false,
-  "referencesFollowed": false,
-  "backVerified": false,
-  "accessChecksPassed": false,
-  "commands": [],
-  "ui": [],
-  "agent": [],
-  "access": [],
-  "blocker": "No installed haskell-language-server-wrapper found (searched $THC_EDIT_HLS, PATH, ~/.ghcup/bin, ~/.local/bin). Next action: provide a GHC 9.14.1-compatible HLS on PATH or via THC_EDIT_HLS and rerun this command. Nothing is downloaded or installed."
+  "realHls": true,
+  "renderedSymbolUI": true,
+  "registeredAgentTool": true,
+  "definitionFollowed": true,
+  "referencesFollowed": true,
+  "backVerified": true,
+  "accessChecksPassed": true,
+  "commands": [
+    "cabal build hide:test:inspector-checks --offline -j2 -f-window -f-web -f-terminal",
+    "cabal build hide:exe:hide --offline -j2 -f-window -f-web -f-terminal",
+    "cabal list-bin hide:test:inspector-checks --offline -j2 -f-window -f-web -f-terminal",
+    "/sandbox/hide/dist-newstyle/build/aarch64-linux/ghc-9.14.1/hide-0.1.0.0/t/inspector-checks/build/inspector-checks/inspector-checks "
+  ],
+  "ui": [
+    {
+      "step": "fixture buffer opens in the editor",
+      "pattern": "/Main\\.hs/",
+      "lines": [
+        "                   [←] ┌───────────────────────────────────────── Main.hs ──────────────────────────────────────1──────┐"
+      ]
+    },
+    {
+      "step": "the private authority file is open as the second window",
+      "pattern": "/thc\\.toml/",
+      "lines": [
+        " ▼ Files               │╔═[■]════════════════════════════════════ thc.toml ═════════════════════════════════════2═[↑]══╗"
+      ]
+    },
+    {
+      "step": "fixture source is rendered",
+      "pattern": "/print \\(area \\(Circle 2\\)\\)/",
+      "lines": [
+        " ├📁 dist-newstyle     ║  print (area (Circle 2))                                                                      ░"
+      ]
+    },
+    {
+      "step": "source context menu offers Inspect symbol",
+      "pattern": "/Inspect symbol/",
+      "lines": [
+        " ├📁 plugins           ║            │ Inspect symbol       Shift+F12 │                                                 ░"
+      ]
+    },
+    {
+      "step": "symbol inspector page is rendered for area (Summary view)",
+      "pattern": "/area — app\\/Main\\.hs:9:10/",
+      "lines": [
+        "                   [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ════════════════════════════3═[↑]══╗"
+      ]
+    },
+    {
+      "step": "retry after HLS not ready",
+      "attempt": 1
+    },
+    {
+      "step": "fixture source is visible again before retry",
+      "pattern": "/print \\(area \\(Circle 2\\)\\)/",
+      "lines": [
+        " ├📁 dist-newstyle     ║  print (area (Circle 2))                                                                      ░"
+      ]
+    },
+    {
+      "step": "source context menu offers Inspect symbol",
+      "pattern": "/Inspect symbol/",
+      "lines": [
+        " ├📁 plugins           ║            │ Inspect symbol       Shift+F12 │                                                 ░"
+      ]
+    },
+    {
+      "step": "symbol inspector page is rendered for area (Summary view)",
+      "pattern": "/area — app\\/Main\\.hs:9:10/",
+      "lines": [
+        "                   [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ════════════════════════════4═[↑]══╗"
+      ]
+    },
+    {
+      "step": "the Type row shows a type signature from HLS",
+      "pattern": "/::/",
+      "lines": [
+        " ├📁 docs              ║area :: Shape → Double Go to [Shape](file:///sandbox/hide/test/inspector-fixture/src/Shapes.hs#▲"
+      ]
+    },
+    {
+      "step": "summary counts definitions",
+      "pattern": "/Definitions: \\d+/",
+      "lines": [
+        " ├📁 .github           ║Definitions: 1                                                                                 ║"
+      ]
+    },
+    {
+      "step": "summary counts references",
+      "pattern": "/References: \\d+/",
+      "lines": [
+        " ├📁 .ralph-runner     ║References: 7                                                                                  ║"
+      ]
+    },
+    {
+      "step": "row menu for Definitions view row",
+      "pattern": "/Open/",
+      "lines": [
+        " ├📁 assets            ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "Definitions view lists one definition",
+      "pattern": "/area — 1 definition/",
+      "lines": [
+        "                   [←] ╔═[■]═════════════════════════════════ area — 1 definition ══════════════════════════════5═[↑]══╗"
+      ]
+    },
+    {
+      "step": "row menu for definition row",
+      "pattern": "/Open/",
+      "lines": [
+        " ├📁 .git              ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "definition site page",
+      "pattern": "/Definition: src\\/Shapes\\.hs:10:1/",
+      "lines": [
+        "                   [←] ╔═[■]═══════════════════════════ Definition: src/Shapes.hs:10:1 ═════════════════════════6═[↑]══╗"
+      ]
+    },
+    {
+      "step": "site page offers Open in editor",
+      "pattern": "/Open in editor/",
+      "lines": [
+        " ▼ Files               ║Open in editor                                                                                 ║"
+      ]
+    },
+    {
+      "step": "row menu for Back row",
+      "pattern": "/Open/",
+      "lines": [
+        " ▼ Files               ║Open in editor                                                                                 ║",
+        " ├📁 .ralph-runner     ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "Back restores the Definitions view the user chose",
+      "pattern": "/area — 1 definition/",
+      "lines": [
+        "                   [←] ╔═[■]═════════════════════════════════ area — 1 definition ══════════════════════════════7═[↑]══╗"
+      ]
+    },
+    {
+      "step": "row menu for References view row",
+      "pattern": "/Open/",
+      "lines": [
+        " ├📁 .ralph-runner     ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "References view lists the uses",
+      "pattern": "/area — \\d+ references?/",
+      "lines": [
+        "                   [←] ╔═[■]═════════════════════════════════ area — 7 references ══════════════════════════════8═[↑]══╗"
+      ]
+    },
+    {
+      "step": "row menu for reference row",
+      "pattern": "/Open/",
+      "lines": [
+        " ├📁 .git              ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "reference site page",
+      "pattern": "/Reference: app\\/Main\\.hs:5:27/",
+      "lines": [
+        "                   [←] ╔═[■]═════════════════════════════ Reference: app/Main.hs:5:27 ══════════════════════════9═[↑]══╗"
+      ]
+    },
+    {
+      "step": "row menu for Back row from reference",
+      "pattern": "/Open/",
+      "lines": [
+        " ▼ Files               ║Open in editor                                                                                 ║",
+        " ├📁 .ralph-runner     ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "Back restores the References view",
+      "pattern": "/area — \\d+ references?/",
+      "lines": [
+        "                   [←] ╔═[■]═════════════════════════════════ area — 7 references ═════════════════════════════10═[↑]══╗"
+      ]
+    },
+    {
+      "step": "row menu for reference row (again)",
+      "pattern": "/Open/",
+      "lines": [
+        " ├📁 .git              ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "reference site page (again)",
+      "pattern": "/Open in editor/",
+      "lines": [
+        " ▼ Files               ║Open in editor                                                                                 ║"
+      ]
+    },
+    {
+      "step": "row menu for Open in editor",
+      "pattern": "/Open/",
+      "lines": [
+        " ├📁 .git              ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "editor caret is at the reference app/Main.hs:5:27",
+      "pattern": "/═ 5:27 /",
+      "lines": [
+        "                       ╚═ 5:27 ◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝"
+      ]
+    },
+    {
+      "step": "Shift+F12 also inspects the symbol",
+      "pattern": "/area — app\\/Main\\.hs:9:10/",
+      "lines": [
+        "                   [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ═══════════════════════════12═[↑]══╗"
+      ]
+    },
+    {
+      "step": "row menu for Definitions view row (second run)",
+      "pattern": "/Open/",
+      "lines": [
+        " ├📁 assets            ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "Definitions view again",
+      "pattern": "/area — 1 definition/",
+      "lines": [
+        "                   [←] ╔═[■]═════════════════════════════════ area — 1 definition ═════════════════════════════13═[↑]══╗"
+      ]
+    },
+    {
+      "step": "row menu for definition row (second run)",
+      "pattern": "/Open/",
+      "lines": [
+        " ├📁 .git              ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "definition site page (second run)",
+      "pattern": "/Open in editor/",
+      "lines": [
+        " ▼ Files               ║Open in editor                                                                                 ║"
+      ]
+    },
+    {
+      "step": "row menu for Open in editor (definition)",
+      "pattern": "/Open/",
+      "lines": [
+        " ├📁 .git              ║│ Open                 │                                                                       ║"
+      ]
+    },
+    {
+      "step": "the definition file is now the active editor buffer",
+      "pattern": "/Shapes\\.hs/",
+      "lines": [
+        "                   [←] ╔═[■]═══════════════════════════ Definition: src/Shapes.hs:10:1 ════════════════════════14═[↑]══╗"
+      ]
+    },
+    {
+      "step": "editor caret is at the definition src/Shapes.hs:10:1",
+      "pattern": "/═ 10:1 /",
+      "lines": [
+        "                       ╚═ 10:1 ◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝"
+      ]
+    },
+    {
+      "step": "Main.hs is the active window again",
+      "pattern": "/print \\(area \\(Circle 2\\)\\)/",
+      "lines": [
+        " ├📁 dist-newstyle     ║  print (area (Circle 2))                                                                      ░"
+      ]
+    }
+  ],
+  "agent": [
+    {
+      "step": "tools/list registers inspect_symbol",
+      "actions": [
+        "discover",
+        "inspect",
+        "view",
+        "follow",
+        "back"
+      ]
+    },
+    {
+      "step": "discover position",
+      "request": {
+        "action": "discover",
+        "bufferId": 1,
+        "line": 9,
+        "column": 10
+      },
+      "ok": true,
+      "labels": []
+    },
+    {
+      "step": "inspect area (try 1)",
+      "request": {
+        "action": "inspect",
+        "bufferId": 1,
+        "line": 9,
+        "column": 10
+      },
+      "ok": true,
+      "view": "hide.symbol.summary",
+      "labels": [
+        "Symbol",
+        "Type",
+        "Definitions: 1",
+        "References: 7"
+      ]
+    },
+    {
+      "step": "view definitions",
+      "request": {
+        "action": "view",
+        "page": "16c145530f46048933855fcfb9aba7cf0d03c1d3d1ceeb56",
+        "view": "hide.symbol.definitions"
+      },
+      "ok": true,
+      "view": "hide.symbol.definitions",
+      "labels": [
+        "src/Shapes.hs:10:1"
+      ]
+    },
+    {
+      "step": "follow the definition row",
+      "request": {
+        "action": "follow",
+        "page": "d4f93abaf2725c4def6af9b040eb548473c5678f2380b2f5",
+        "row": 0
+      },
+      "ok": true,
+      "view": "hide.site.source",
+      "labels": [
+        "Open in editor",
+        "Source line 10"
+      ]
+    },
+    {
+      "step": "open the definition location (verified against current text)",
+      "request": {
+        "action": "follow",
+        "page": "db6dce179f3f5be4a1ac92ebe1251409deb597ad36e51e44",
+        "row": 0
+      },
+      "ok": true,
+      "labels": []
+    },
+    {
+      "step": "back from the definition site",
+      "request": {
+        "action": "back",
+        "page": "db6dce179f3f5be4a1ac92ebe1251409deb597ad36e51e44"
+      },
+      "ok": true,
+      "view": "hide.symbol.definitions",
+      "labels": [
+        "src/Shapes.hs:10:1"
+      ]
+    },
+    {
+      "step": "view references",
+      "request": {
+        "action": "view",
+        "page": "c7bf9a0b0e072b8c773141abb5d6e115a66d371c0849a41e",
+        "view": "hide.symbol.references"
+      },
+      "ok": true,
+      "view": "hide.symbol.references",
+      "labels": [
+        "app/Main.hs:5:27",
+        "app/Main.hs:9:10",
+        "src/Shapes.hs:4:27",
+        "src/Shapes.hs:9:1",
+        "src/Shapes.hs:10:1",
+        "src/Shapes.hs:11:1",
+        "src/Shapes.hs:15:23"
+      ]
+    },
+    {
+      "step": "follow reference row 0",
+      "request": {
+        "action": "follow",
+        "page": "5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949",
+        "row": 0
+      },
+      "ok": true,
+      "view": "hide.site.source",
+      "labels": [
+        "Open in editor",
+        "Source line 5"
+      ]
+    },
+    {
+      "step": "open reference location app/Main.hs:5:27",
+      "request": {
+        "action": "follow",
+        "page": "1dc93dba44e532d02dfa3b018abb32883a5380c1bbe10bd5",
+        "row": 0
+      },
+      "ok": true,
+      "labels": []
+    },
+    {
+      "step": "follow reference row 1",
+      "request": {
+        "action": "follow",
+        "page": "5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949",
+        "row": 1
+      },
+      "ok": true,
+      "view": "hide.site.source",
+      "labels": [
+        "Open in editor",
+        "Source line 9"
+      ]
+    },
+    {
+      "step": "open reference location app/Main.hs:9:10",
+      "request": {
+        "action": "follow",
+        "page": "9a0f820955e8a3e3f525d67609eef8a5af9e99aac7753db1",
+        "row": 0
+      },
+      "ok": true,
+      "labels": []
+    },
+    {
+      "step": "follow reference row 2",
+      "request": {
+        "action": "follow",
+        "page": "5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949",
+        "row": 2
+      },
+      "ok": true,
+      "view": "hide.site.source",
+      "labels": [
+        "Open in editor",
+        "Source line 4"
+      ]
+    },
+    {
+      "step": "open reference location src/Shapes.hs:4:27",
+      "request": {
+        "action": "follow",
+        "page": "9b606f748484fb9605bbe89f5b0cdcfda40be8990d586368",
+        "row": 0
+      },
+      "ok": true,
+      "labels": []
+    },
+    {
+      "step": "follow reference row 3",
+      "request": {
+        "action": "follow",
+        "page": "5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949",
+        "row": 3
+      },
+      "ok": true,
+      "view": "hide.site.source",
+      "labels": [
+        "Open in editor",
+        "Source line 9"
+      ]
+    },
+    {
+      "step": "open reference location src/Shapes.hs:9:1",
+      "request": {
+        "action": "follow",
+        "page": "ba6ad06648b271353580c86a0abdd6ee9aa1818fa7033abd",
+        "row": 0
+      },
+      "ok": true,
+      "labels": []
+    },
+    {
+      "step": "follow reference row 4",
+      "request": {
+        "action": "follow",
+        "page": "5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949",
+        "row": 4
+      },
+      "ok": true,
+      "view": "hide.site.source",
+      "labels": [
+        "Open in editor",
+        "Source line 10"
+      ]
+    },
+    {
+      "step": "open reference location src/Shapes.hs:10:1",
+      "request": {
+        "action": "follow",
+        "page": "9a21190ef91ede034808036cc3d00f3f5ad549d9deea0916",
+        "row": 0
+      },
+      "ok": true,
+      "labels": []
+    },
+    {
+      "step": "follow reference row 5",
+      "request": {
+        "action": "follow",
+        "page": "5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949",
+        "row": 5
+      },
+      "ok": true,
+      "view": "hide.site.source",
+      "labels": [
+        "Open in editor",
+        "Source line 11"
+      ]
+    },
+    {
+      "step": "open reference location src/Shapes.hs:11:1",
+      "request": {
+        "action": "follow",
+        "page": "5f1b01a254b3cc9f1d7a622faa7b0988382da517ba85fe8f",
+        "row": 0
+      },
+      "ok": true,
+      "labels": []
+    },
+    {
+      "step": "follow reference row 6",
+      "request": {
+        "action": "follow",
+        "page": "5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949",
+        "row": 6
+      },
+      "ok": true,
+      "view": "hide.site.source",
+      "labels": [
+        "Open in editor",
+        "Source line 15"
+      ]
+    },
+    {
+      "step": "open reference location src/Shapes.hs:15:23",
+      "request": {
+        "action": "follow",
+        "page": "2013eb5ae6a1549114d340339e46c896b51276295a5a0c55",
+        "row": 0
+      },
+      "ok": true,
+      "labels": []
+    },
+    {
+      "step": "forged page token",
+      "request": {
+        "action": "view",
+        "page": "ffffffffffffffffffffffffffffffffffffffffffffffff",
+        "view": "hide.symbol.summary"
+      },
+      "ok": false,
+      "error": "\"Unknown or expired page. Run inspect again.\""
+    },
+    {
+      "step": "inspect a private buffer",
+      "request": {
+        "action": "inspect",
+        "bufferId": 2,
+        "line": 1,
+        "column": 1
+      },
+      "ok": false,
+      "error": "\"This buffer is private to the user.\""
+    },
+    {
+      "step": "inspect position without a symbol",
+      "request": {
+        "action": "inspect",
+        "bufferId": 1,
+        "line": 1,
+        "column": 1
+      },
+      "ok": false,
+      "error": "\"No symbol at that position.\""
+    },
+    {
+      "step": "old page after the buffer was edited",
+      "request": {
+        "action": "view",
+        "page": "5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949",
+        "view": "hide.symbol.summary"
+      },
+      "ok": false,
+      "error": "\"Unknown or expired page. Run inspect again.\""
+    },
+    {
+      "step": "inspect with the old revision",
+      "request": {
+        "action": "inspect",
+        "bufferId": 1,
+        "line": 9,
+        "column": 10,
+        "revision": 0
+      },
+      "ok": false,
+      "error": "\"Buffer revision changed.\""
+    }
+  ],
+  "access": [
+    {
+      "name": "a forged page token is refused",
+      "ok": true
+    },
+    {
+      "name": "a private buffer (agent authority file) cannot be inspected",
+      "ok": true
+    },
+    {
+      "name": "an out-of-place position is refused",
+      "ok": true
+    },
+    {
+      "name": "editing the buffer expires earlier inspections",
+      "ok": true
+    },
+    {
+      "name": "a stale revision argument is refused",
+      "ok": true
+    }
+  ],
+  "hls": {
+    "executable": "/sandbox/hls-ghcup/bin/haskell-language-server-wrapper",
+    "version": "haskell-language-server version: 2.14.0.0 (GHC: 9.10.3) (PATH: /sandbox/hls-ghcup/lib/haskell-language-server-2.14.0.0/bin/haskell-language-server-wrapper)",
+    "selectedServer": {
+      "executable": "/sandbox/hls-ghcup/bin/haskell-language-server-9.14.1",
+      "version": "haskell-language-server version: 2.14.0.0 (GHC: 9.14.1) (PATH: /sandbox/hls-ghcup/lib/haskell-language-server-2.14.0.0/bin/haskell-language-server-9.14.1)"
+    }
+  },
+  "fixture": {
+    "path": "test/inspector-fixture",
+    "files": [
+      "app/Main.hs",
+      "src/Shapes.hs"
+    ],
+    "sha": [
+      "app/Main.hs:25e32cbe75c08f52ebf833091d02d375d1a5273f",
+      "src/Shapes.hs:e1b927b7a5dc50b5cae8bbdc827cc6ba8cdac552"
+    ]
+  },
+  "focusedChecks": {
+    "command": "inspector-checks",
+    "passed": true,
+    "output": [
+      "original inspector specification checks passed (independent extensions, UI/JSON, navigation history)",
+      "typed inspector core checks passed",
+      "inspector window checks passed",
+      "package sidebar checks passed",
+      "symbol inspector checks passed (fake language server; not a real-HLS result)"
+    ]
+  },
+  "definitionObserved": "src/Shapes.hs:10:1",
+  "referenceObserved": "app/Main.hs:5:27",
+  "backChecksInUI": 2,
+  "investigation": {
+    "symbol": "area",
+    "explanation": "`area` (area :: Shape → Double Go to [Shape](file:///sandbox/hide/test/inspector-fixture/src/Shapes.hs#L6) *Defined at /sandbox/hide/test/inspector-fixture/src/Shapes.hs:10:1* The area of one shape.) is defined at test/inspector-fixture/src/Shapes.hs:10 (`area (Circle r) = 3 * r * r`) and is used at test/inspector-fixture/app/Main.hs:5 (`import Shapes (Shape(..), area, totalArea)`), test/inspector-fixture/app/Main.hs:9 (`print (area (Circle 2))`), test/inspector-fixture/src/Shapes.hs:4 (`module Shapes (Shape(..), area, totalArea) where`), test/inspector-fixture/src/Shapes.hs:9 (`area :: Shape -> Double`), test/inspector-fixture/src/Shapes.hs:11 (`area (Rect w h) = w * h`), test/inspector-fixture/src/Shapes.hs:15 (`totalArea = sum . map area`). Locations come from inspect_symbol follow results, each re-verified against current text.",
+    "locations": [
+      "test/inspector-fixture/src/Shapes.hs:10",
+      "test/inspector-fixture/app/Main.hs:5",
+      "test/inspector-fixture/app/Main.hs:9",
+      "test/inspector-fixture/src/Shapes.hs:4",
+      "test/inspector-fixture/src/Shapes.hs:9",
+      "test/inspector-fixture/src/Shapes.hs:11",
+      "test/inspector-fixture/src/Shapes.hs:15"
+    ],
+    "method": "scripted MCP tool client (test/inspector-symbol-workflow.mjs); no autonomous LLM session"
+  },
+  "shutdown": "clean"
 }

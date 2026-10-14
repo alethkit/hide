@@ -41,3 +41,8 @@ re-enters the previous (subject, view). The agent has `back(page)` returning the
 * `test/inspector-symbol-workflow.mjs`: runtime acceptance on the built editor — rendered UI over the remote display
   protocol, `hide --mcp-editor` bridge to the same session (real MCP dispatch/admission), access checks against the live
   editor. Real mode requires a real HLS; `--fake-lsp` is a labelled dry run writing `evidence.fake-lsp.json`.
+
+## Fixture
+`test/inspector-fixture` is a single-component executable (`app/Main.hs` + `src/Shapes.hs`) with an explicit `hie.yaml`.
+One component is deliberate (see RESULTS.md, root cause 2). The harness gives HLS's cabal an empty `CABAL_CONFIG` so a fresh
+isolated XDG tree never triggers an offline Hackage fetch.

@@ -1,20 +1,18 @@
 # Open questions
 
-## P1 — No real HLS installed (blocks WORKFLOW_COMPLETE)
-Requirement 5 and the runtime acceptance demand a live investigation with an installed compatible HLS. None exists on
-this box (`PATH`, `$THC_EDIT_HLS`, `~/.ghcup/{bin,hls}`, whole-filesystem name search; `/opt` unreadable) and downloads
-and installs are forbidden. `inspector-workflow/evidence.json` therefore records every flag `false` plus the blocker.
-**Next action:** provide `haskell-language-server-wrapper` built for GHC 9.14.1 on `PATH` or via `THC_EDIT_HLS`, then run
-`node test/inspector-symbol-workflow.mjs` and commit the resulting `evidence.json`.
+No P0/P1 items remain. The former P1 (no HLS installed) was resolved by the user-authorized installation under
+`/sandbox/hls-ghcup`; the live acceptance run now passes (see RESULTS.md).
 
-## P2 — Real-HLS behaviours unverified (HYPOTHESIS until the run above)
-* HYPOTHESIS: HLS needs 20–90 s to load the fixture package; the script retries (UI 6×, agent 8×, 20 s apart).
-* HYPOTHESIS: the fixture's `Shapes.hs` export list and `module` line count as references (HLS includes declarations
-  in `references`); the script expects ≥2 reference locations including `app/Main.hs`.
-* HYPOTHESIS: real hover returns a markdown block whose first code fence is the signature; the UI assertion only
-  requires `::` in the Type row.
+## P2 — HYPOTHESES from the live run (not verified beyond this fixture)
+* HYPOTHESIS: cross-component definitions (e.g. exe → separate library in the same package) return no location until HLS has
+  loaded the target component; real multi-component projects may show "Definitions: none" at first. The UI states it
+  plainly; a "retry"/refresh affordance is not implemented.
+* HYPOTHESIS: HLS references include declaration/export/signature sites (observed: 7 locations for `area`, 6 in `Shapes.hs`).
 
-## P3 — Deliberate limits
+## P3 — Limits
+* When HLS's cradle fails, every request errors with "No handler for: SMethod_…". The inspector shows that text verbatim; it
+  does not diagnose the cradle (cabal config, `.cabal` syntax). Surfacing HLS's own startup diagnostics would be kinder.
 * Only one symbol per request; no type-definition or call-hierarchy views.
-* Operators and backquoted names are selected by lexical class, not by the parser.
+* Operators and backquoted names are selected lexically, not by the parser.
 * Human history is per page; no cross-session persistence.
+* The agent investigation is a scripted MCP client, not an autonomous LLM session.

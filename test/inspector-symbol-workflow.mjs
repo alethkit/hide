@@ -24,7 +24,7 @@ import { inflateRawSync } from 'node:zlib';
 import { randomBytes } from 'node:crypto';
 import { spawn, spawnSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync, existsSync, readFileSync, accessSync, constants } from 'node:fs';
-import { join, relative, delimiter } from 'node:path';
+import { join, dirname, relative, delimiter } from 'node:path';
 
 const repo = '/sandbox/hide';
 const task = join(repo, 'inspector-workflow');
@@ -106,6 +106,9 @@ else {
   const version = spawnSync(hls, ['--version'], { encoding: 'utf8', env: baseEnv, timeout: 60000 });
   if (version.status !== 0) finish(2, `${hls} --version failed: ${version.stderr || version.error}`);
   evidence.hls = { executable: hls, version: (version.stdout + version.stderr).trim().split('\n')[0] };
+  // The wrapper reports its own build GHC; the server it launches for this project is the per-GHC executable.
+  const selected = join(dirname(hls), 'haskell-language-server-' + (spawnSync('ghc', ['--numeric-version'], { encoding: 'utf8', env: baseEnv }).stdout.trim()));
+  if (existsSync(selected)) evidence.hls.selectedServer = { executable: selected, version: (spawnSync(selected, ['--version'], { encoding: 'utf8', env: baseEnv, timeout: 60000 }).stdout || '').trim().split('\n')[0] };
   evidence.realHls = true;
 }
 evidence.fixture = { path: relative(repo, fixture), files: ['app/Main.hs', 'src/Shapes.hs'],
@@ -131,6 +134,10 @@ const env = { ...baseEnv, hide_datadir: repo, THC_EDIT_HLS: hls };
 for (const [key, dir] of Object.entries({ XDG_DATA_HOME: 'data', XDG_CONFIG_HOME: 'config', XDG_STATE_HOME: 'state', XDG_CACHE_HOME: 'cache' })) {
   env[key] = join(state, dir); mkdirSync(env[key], { recursive: true });
 }
+// HLS's cradle runs cabal. A fresh XDG tree makes cabal write a default config and try to fetch the Hackage index
+// (blocked offline), which leaves HLS without handlers. The fixture needs only boot packages: give cabal an empty config.
+env.CABAL_CONFIG = join(state, 'cabal-config');
+writeFileSync(env.CABAL_CONFIG, '-- empty: offline, no package repositories\n');
 // An authority file the editor keeps private from agents; opening it makes a private buffer.
 const privateFile = join(state, 'thc.toml');
 writeFileSync(privateFile, "# authority file\n");
@@ -226,6 +233,7 @@ try {
   let summaryOk = false;
   for (let attempt = 1; attempt <= attempts && !summaryOk; attempt++) {
     const area = find(/print \(area/);
+    if (!area) throw Error('fixture source is not visible for the inspection attempt');
     input(mouse(0, area.x + 10, area.y));  // inside "area": caret placement
     await sleep(200);
     input(mouse(2, area.x + 10, area.y));
@@ -235,8 +243,13 @@ try {
     // The Type row shows what HLS reported; a failure is stated, not hidden.
     await click(/Type\s/, 'Type row');
     await sleep(300);
-    const failed = /Unavailable:/.test(text()) || /No type information|has no type information/.test(text());
-    if (failed && attempt < attempts) { log('HLS not ready (attempt ' + attempt + '); retrying'); evidence.ui.push({ step: 'retry after HLS not ready', attempt }); await sleep(20000); continue; }
+    // HLS answers hover before its index knows the dependency, so "Definitions: none" right after startup is also "not ready"
+    // (the fixture has exactly one definition; the check below still demands it be found).
+    const failed = /Unavailable:/.test(text()) || /No type information|has no type information/.test(text()) || /Definitions: (none|unavailable)/.test(text()) || /References: (none|unavailable)/.test(text());
+    if (failed && attempt < attempts) { log('HLS not ready (attempt ' + attempt + '); retrying'); evidence.ui.push({ step: 'retry after HLS not ready', attempt }); await sleep(20000);
+      input(key('1', ['alt']));  // the inspector page covers the source: bring Main.hs back before retrying
+      await expect(/print \(area \(Circle 2\)\)/, 'fixture source is visible again before retry');
+      continue; }
     summaryOk = true;
   }
   if (!fakeMode) { await expect(/::/, 'the Type row shows a type signature from HLS'); }
