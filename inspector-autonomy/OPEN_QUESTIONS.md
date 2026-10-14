@@ -29,3 +29,5 @@ No unresolved P0 or P1 items.
   uncollapsed 120x40 case.
 * Iteration 3: one `check-deliverables.mjs` invocation crashed with a Node stack trace (its `git` call; cause not captured, HYPOTHESIS:
   transient git lock from another campaign's runner); 5 reruns passed. The old smoke had one flaky failure, hardened (RESULTS.md addendum).
+* Iteration 4 (P2): sidebar section order is not stable across launches (package may appear above or below Agents depending on
+  publication timing). Not fixed; the smoke now locates the package row dynamically. A fixed section rank would be a UX improvement.

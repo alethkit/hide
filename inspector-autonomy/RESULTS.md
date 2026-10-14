@@ -56,3 +56,12 @@ One acceptance run of `test/inspector-ui-smoke.mjs` failed at "package context m
 HYPOTHESIS: the "collapse Files reveals package" step matched `▶ hide`, which is already on screen before the click, so a stale
 frame could let the next right-click land before the collapse. Only the precondition changed: that step now requires the collapsed
 `▶ Files` header before `▶ hide` (`/▶ Files[\s\S]*▶ hide/`). Labels and all assertions are unchanged; 3 consecutive passes afterwards.
+
+## Iteration 4 addendum: smoke root cause (section order), not a stale frame
+The iteration-3 hypothesis was incomplete: the smoke still failed intermittently (2 of ~10 runs). A debug dump of the sidebar at the
+failure showed the order `Files, Sessions, Debug, Watches, hide, Agents` (package at screen row 7) while passing runs had Agents above
+`hide` (row 8). Section order depends on which provider publishes first, so the hard-coded right-click row 8 hit `Agents` instead.
+Fix (coordinates only): the smoke now finds the `▶ hide` row on the settled display and clicks that row and the Inspect item at row+3.
+All step labels and assertions are unchanged. Afterwards: `inspector-ui-smoke.mjs` 6/6 passes, `inspector-sidebar-scroll.mjs` 3/3 passes.
+The unstable section order is a product wart (sections can reorder as providers publish); HYPOTHESIS about the exact publisher race, not
+investigated further. The new scroll script does not depend on the order.

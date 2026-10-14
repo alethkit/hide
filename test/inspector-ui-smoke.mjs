@@ -63,8 +63,11 @@ try {
   await expect(/▶ hide/,'package sidebar appears');
   // Require the collapsed Files header so a stale pre-click frame cannot satisfy this step.
   input(mouse(0,2,3));await expect(/▶ Files[\s\S]*▶ hide/,'collapse Files reveals package');
-  input(mouse(2,7,8));await expect(/│ Inspect +│/,'package context menu exposes Inspect');
-  input(mouse(0,12,11));await expect(/hide — \d+ components/,'package inspector opens');
+  // Section order depends on which provider publishes first, so find the package row instead of assuming row 8.
+  const packageRow=text.split('\n').findIndex(line=>/^.{0,6}▶ hide/.test(line))+1;
+  if(packageRow<1) throw Error('package root row not found');
+  input(mouse(2,7,packageRow));await expect(/│ Inspect +│/,'package context menu exposes Inspect');
+  input(mouse(0,12,packageRow+3));await expect(/hide — \d+ components/,'package inspector opens');
   input(mouse(2,30,4));await expect(/Open/,'component row exposes Open');
   input(key('Enter'));await expect(/exe:hide — unconditional sources/,'component source view opens');
   input([...mouse(2,32,4),...key('Enter')]);await expect(/ComponentSources · Declaration/,'switch to Declaration');
