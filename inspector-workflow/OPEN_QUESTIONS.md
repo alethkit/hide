@@ -16,3 +16,11 @@ No P0/P1 items remain. The former P1 (no HLS installed) was resolved by the user
 * Operators and backquoted names are selected lexically, not by the parser.
 * Human history is per page; no cross-session persistence.
 * The agent investigation is a scripted MCP client, not an autonomous LLM session.
+
+## P3 — found in iteration 3
+* `node test/inspector-ui-smoke.mjs` failed (package sidebar not visible) once the checkout gained top-level task directories
+  (`.ralph-runner`, `inspector-*`): the Files tree grew to 34 rows and the Packages section, published after Agents, fell below
+  the 40-row viewport (verified: the same smoke passes at 120x50). The sidebar has no scrolling of later sections; the smoke now
+  uses 120x60. Product follow-up: let the sidebar scroll or order Packages before long trees.
+* `evidence.json` is now byte-stable across reruns (random page references are renumbered `page-N`), so the committed-evidence
+  gate, which runs after the acceptance run rewrites the file, does not see a diff.

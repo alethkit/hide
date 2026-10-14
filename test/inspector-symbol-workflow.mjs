@@ -49,7 +49,13 @@ function finish(code, blocker) {
   Object.assign(evidence, Object.fromEntries(Object.keys(flags).map(key => [key, code === 0 && evidence[key] === true])));
   if (code === 0 && !fakeMode) evidence.realHls = evidence.realHls === true;
   if (fakeMode) evidence.realHls = false;
-  writeFileSync(evidencePath, JSON.stringify(evidence, null, 2) + '\n');
+  // Page references are random per session; number them by first appearance so reruns are byte-stable.
+  const pages = new Map();
+  const stable = JSON.stringify(evidence, null, 2).replace(/"page": "([0-9a-f]{48})"/g, (_, id) => {
+    if (!pages.has(id)) pages.set(id, 'page-' + (pages.size + 1));
+    return '"page": "' + pages.get(id) + '"';
+  });
+  writeFileSync(evidencePath, stable + '\n');
   writeFileSync(join(logDirectory, fakeMode ? 'run-fake-lsp.log' : 'run.log'), logs.join('\n') + '\n');
   cleanup();
   process.exit(code);

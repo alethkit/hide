@@ -323,7 +323,7 @@
       "step": "view definitions",
       "request": {
         "action": "view",
-        "page": "467af74273fdd6ba87b44cbd88dd9d673c254b8d810b1010",
+        "page": "page-1",
         "view": "hide.symbol.definitions"
       },
       "ok": true,
@@ -336,7 +336,7 @@
       "step": "follow the definition row",
       "request": {
         "action": "follow",
-        "page": "5ea4d009b995417fb228a1dd0ae7ac2c81ade4c63aef8f53",
+        "page": "page-2",
         "row": 0
       },
       "ok": true,
@@ -350,7 +350,7 @@
       "step": "open the definition location (verified against current text)",
       "request": {
         "action": "follow",
-        "page": "6513578b4f3f9d6f1038c4e392fb141f3d838faf35f3b76f",
+        "page": "page-3",
         "row": 0
       },
       "ok": true,
@@ -360,7 +360,7 @@
       "step": "back from the definition site",
       "request": {
         "action": "back",
-        "page": "6513578b4f3f9d6f1038c4e392fb141f3d838faf35f3b76f"
+        "page": "page-3"
       },
       "ok": true,
       "view": "hide.symbol.definitions",
@@ -372,7 +372,7 @@
       "step": "view references",
       "request": {
         "action": "view",
-        "page": "b1383484f2f230a973a870818965cb0c9b5ddf78478fa82a",
+        "page": "page-4",
         "view": "hide.symbol.references"
       },
       "ok": true,
@@ -391,7 +391,7 @@
       "step": "follow reference row 0",
       "request": {
         "action": "follow",
-        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
+        "page": "page-5",
         "row": 0
       },
       "ok": true,
@@ -405,7 +405,7 @@
       "step": "open reference location app/Main.hs:5:27",
       "request": {
         "action": "follow",
-        "page": "f08bf75e9878272cdca7e5e8901a7e8e68cdaa07bf93e08b",
+        "page": "page-6",
         "row": 0
       },
       "ok": true,
@@ -415,7 +415,7 @@
       "step": "follow reference row 1",
       "request": {
         "action": "follow",
-        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
+        "page": "page-5",
         "row": 1
       },
       "ok": true,
@@ -429,7 +429,7 @@
       "step": "open reference location app/Main.hs:9:10",
       "request": {
         "action": "follow",
-        "page": "408712bcae9232e3e637361c129d544c85c8e287c924486f",
+        "page": "page-7",
         "row": 0
       },
       "ok": true,
@@ -439,7 +439,7 @@
       "step": "follow reference row 2",
       "request": {
         "action": "follow",
-        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
+        "page": "page-5",
         "row": 2
       },
       "ok": true,
@@ -453,7 +453,7 @@
       "step": "open reference location src/Shapes.hs:4:27",
       "request": {
         "action": "follow",
-        "page": "5caa302ee3eb797bf842a97b097e254cca4eb36316edca4f",
+        "page": "page-8",
         "row": 0
       },
       "ok": true,
@@ -463,7 +463,7 @@
       "step": "follow reference row 3",
       "request": {
         "action": "follow",
-        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
+        "page": "page-5",
         "row": 3
       },
       "ok": true,
@@ -477,7 +477,7 @@
       "step": "open reference location src/Shapes.hs:9:1",
       "request": {
         "action": "follow",
-        "page": "0d087ddcab7c1b63e069835319d7123849c562556846d839",
+        "page": "page-9",
         "row": 0
       },
       "ok": true,
@@ -487,7 +487,7 @@
       "step": "follow reference row 4",
       "request": {
         "action": "follow",
-        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
+        "page": "page-5",
         "row": 4
       },
       "ok": true,
@@ -501,7 +501,7 @@
       "step": "open reference location src/Shapes.hs:10:1",
       "request": {
         "action": "follow",
-        "page": "7a8817da02c91c722ee0e9649890563bd6fb409c0eaf38c3",
+        "page": "page-10",
         "row": 0
       },
       "ok": true,
@@ -511,7 +511,7 @@
       "step": "follow reference row 5",
       "request": {
         "action": "follow",
-        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
+        "page": "page-5",
         "row": 5
       },
       "ok": true,
@@ -525,7 +525,7 @@
       "step": "open reference location src/Shapes.hs:11:1",
       "request": {
         "action": "follow",
-        "page": "bd34413af3c01f8b6f9893136bb4377841e4332e79764135",
+        "page": "page-11",
         "row": 0
       },
       "ok": true,
@@ -535,7 +535,7 @@
       "step": "follow reference row 6",
       "request": {
         "action": "follow",
-        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
+        "page": "page-5",
         "row": 6
       },
       "ok": true,
@@ -549,7 +549,7 @@
       "step": "open reference location src/Shapes.hs:15:23",
       "request": {
         "action": "follow",
-        "page": "1ab8a3d22700852e4aa85140a1fa0a2ec44eba4d34add253",
+        "page": "page-12",
         "row": 0
       },
       "ok": true,
@@ -559,7 +559,7 @@
       "step": "forged page token",
       "request": {
         "action": "view",
-        "page": "ffffffffffffffffffffffffffffffffffffffffffffffff",
+        "page": "page-13",
         "view": "hide.symbol.summary"
       },
       "ok": false,
@@ -591,7 +591,7 @@
       "step": "old page after the buffer was edited",
       "request": {
         "action": "view",
-        "page": "411d6d91b67e68ac5359effd9c687a1c8aa3597c10d332be",
+        "page": "page-5",
         "view": "hide.symbol.summary"
       },
       "ok": false,

@@ -34,7 +34,7 @@ child.stdout.on('data',chunk=>{
   }}catch(error){protocolError=error;}
 });
 send({type:'hello',version:1,session:randomBytes(24).toString('hex'),client:randomBytes(24).toString('hex'),ack:0,
-  args:['--size=120x40','packages/hide-plugin-api/src/Hide/Plugin/Inspect.hs']});
+  args:['--size=120x60','packages/hide-plugin-api/src/Hide/Plugin/Inspect.hs']});
 child.stderr.on('data',chunk=>{text+=chunk;});
 child.on('error',error=>{text+=error.message;closed=true;exitCode=1;});
 child.on('close',code=>{closed=true;exitCode=code;});
