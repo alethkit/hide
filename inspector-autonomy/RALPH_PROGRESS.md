@@ -8,3 +8,7 @@ Verified: build, inspector-checks, old smoke, new script all pass; no session le
 Failing evidence: none known. HLS on hide did not work (documented, hlsOnHide=false).
 Next action: none required; if a later iteration runs, re-run the gate and, if memory allows, the editor-tests sidebar
 suites (SidebarCheck/BindingsCheck/ProtocolCheck) which were not run.
+
+## Iteration 2 (audit)
+Re-audited against the gate: all checks in "Current evidence" pass (build, inspector-checks, old smoke, new scroll script,
+deliverables gate); work committed (ec9185d); no session running; no P0/P1. Nothing further required.
