@@ -223,6 +223,8 @@ library
     , Hide.PackagePaths
     , Hide.PackageSidebar
     , Hide.PackageInspect
+    , Hide.SymbolInspect
+    , Hide.SymbolInspector
     , Hide.InspectorWindow
     , Hide.InspectorMenu
     , Hide.ProjectBrowser

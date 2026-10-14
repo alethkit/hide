@@ -27,7 +27,6 @@ import Hide.MenuCommands (MenuHost,MenuContext(..),MenuReply(..),menuContributio
 import Hide.Plugin.Command
 import Hide.Plugin.Inspect
 import qualified Hide.Plugin.Menu as Menu
-import qualified Hide.Plugin.Window as W
 import Hide.SidebarCommands (SidebarContext(..))
 
 -- | Register the Open row action for this inspector's lifetime. Windows opened
@@ -37,11 +36,11 @@ withInspectorMenu host inspector action=withRegistry $ \registry->do
   command<-either (fail . show) pure =<< registerCommand registry (definition inspector)
   reference<-either (fail . show) pure =<< Menu.contributeMenu (menuContributions host)
     (Menu.MenuDef "hide.inspect.open" "context.window-rows" "inspect" 0 "Open" "" False
-      (Menu.menuAction registry command (const (Right ())) (\_ update->pure (PreparedWindow update))))
+      (Menu.menuAction registry command (const (Right ())) (\_ followed->pure (case followed of Opened update->PreparedWindow update; Jump path row column expected->PreparedJump path row column expected))))
   setOpenMenu inspector [reference]
   action `finally` (setOpenMenu inspector [] >> void (Menu.retireMenu (menuContributions host) reference))
 
-definition :: Inspector -> CommandDef MenuContext () W.WindowUpdate
+definition :: Inspector -> CommandDef MenuContext () Followed
 definition inspector=CommandDef "hide.inspect.open" "Open inspector row" unit result $ \context ()->
   if invocationOrigin context/=Menu.HumanMenu then pure (Left (CommandRejected "Inspector navigation requires human input."))
   else case invocationRow context of
@@ -49,7 +48,7 @@ definition inspector=CommandDef "hide.inspect.open" "Open inspector row" unit re
     Just (reference,node)->do
       let sidebar=invocationSidebar context
           inspectContext=InspectContext (invocationOrigin context) (sidebarContextWorkspace sidebar) (sidebarPrivatePaths sidebar)
-      either (Left . CommandRejected) Right <$> followInspectorRow inspector inspectContext reference node
+      either (Left . CommandRejected) Right <$> followInspectorAction inspector inspectContext reference node
   where
     unit=Codec Null (const (Right ())) (const Null)
-    result=Codec Null (const (Left "Inspector windows are host values.")) (const Null)
+    result=Codec Null (const (Left "Inspector results are host values.")) (const Null)

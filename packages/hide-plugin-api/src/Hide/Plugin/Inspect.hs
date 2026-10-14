@@ -229,7 +229,12 @@ data Block = Heading Text | Prose Text | Facts [(Text,Text)] deriving (Eq,Show)
 data Item = Item { itemLabel :: Text, itemDetail :: Text, itemTarget :: Maybe Target } deriving (Eq,Show)
 -- | Navigation inside the inspector, or a file for the host to open through
 -- its own admission. A file path is a request, never authority.
-data Target = Inspect Subject | OpenFile FilePath deriving (Eq,Show)
+--
+-- 'OpenAt' names a 1-based line, a 1-based column in Unicode code points and the
+-- text of that line when the object was observed. The host jumps only if that
+-- line still reads the same, so a location can go stale but can never silently
+-- select unrelated text.
+data Target = Inspect Subject | OpenFile FilePath | OpenAt !FilePath !Int !Int !Text deriving (Eq,Show)
 
 -- | A document that 'prepareDoc' bounded, sanitized and forced.
 data PreparedDoc = PreparedDoc Doc !Int
@@ -268,6 +273,7 @@ prepareDoc doc=do
     block (Facts facts)=Facts [(line 128 k,line 4096 v) | (k,v)<-take 128 facts]
     item (Item label detail target)=Item (line 240 label) (multi maxDetail detail) (fmap pathOk target)
     pathOk (OpenFile path)=OpenFile (take 32768 (filter (/='\NUL') path))
+    pathOk (OpenAt path row column expected)=OpenAt (take 32768 (filter (/='\NUL') path)) row column (line 240 expected)
     pathOk other=other
     line n=T.copy . T.take n . T.map blank
     multi n=T.copy . T.take n . T.map (\c->if c=='\n' then c else blank c)
@@ -279,6 +285,7 @@ prepareDoc doc=do
     weighBlock (Prose t)=T.length t
     weighBlock (Facts fs)=sum [T.length k+T.length v | (k,v)<-fs]
     weighTarget (Just (OpenFile path))=length path
+    weighTarget (Just (OpenAt path row column expected))=length path+row+column+T.length expected
     weighTarget (Just (Inspect subject))=let (root,steps)=subjectIdentity subject in T.length (rootIdText root)+length (map keyDepth steps)
     weighTarget Nothing=0
     keyDepth (Step ident key)=T.length (edgeIdText ident)+(case key of Key k->compare k k `seq` 1)

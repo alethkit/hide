@@ -43,6 +43,7 @@ renderJSON prepared=JSONPage value targets
       Inspect subject->object ["id" .= n,"kind" .= ("inspect" :: Text),
         "type" .= T.pack (show (subjectType subject))]
       OpenFile _->object ["id" .= n,"kind" .= ("open-file" :: Text)]
+      OpenAt path row column _->object ["id" .= n,"kind" .= ("open-source" :: Text),"path" .= path,"line" .= row,"column" .= column]
 
 -- | Render an authorized subject's current pure view on the caller's worker.
 -- Effectful queries remain an explicit host operation and are never run here.

@@ -24,7 +24,7 @@
 -- scoped 'W.openWindow'/'adoptWindowUpdate' path.
 module Hide.InspectorWindow
   ( Inspector, withInspector, inspectorViews, inspectorPublisher'
-  , RowAction(..), Page(..), buildPage, inspectSubject, followInspectorRow, pageAction, setOpenMenu
+  , RowAction(..), Page(..), Followed(..), buildPage, inspectSubject, followInspectorRow, followInspectorAction, pageAction, setOpenMenu
   ) where
 
 import Control.Monad (filterM)
@@ -39,8 +39,12 @@ import qualified Hide.Plugin.Tree as Tree
 import qualified Hide.Plugin.Window as W
 
 -- | What a row does when activated. It is closed data, never a callback.
-data RowAction = Navigate !Subject | ShowView !Subject !ViewId | OpenPath !FilePath | GoBack
+data RowAction = Navigate !Subject | ShowView !Subject !ViewId | OpenPath !FilePath | OpenSite !FilePath !Int !Int !Text | GoBack
   deriving (Eq,Show)
+
+-- | The outcome of an admitted row: another inspector page, or a source
+-- location that the host must still verify against its current text.
+data Followed = Opened !W.WindowUpdate | Jump !FilePath !Int !Int !Text
 
 -- | A prepared window and the exact actions of its rows.
 data Page = Page { pageWindow :: !W.PreparedWindow, pageActions :: !(M.Map Tree.NodeId RowAction) }
@@ -108,6 +112,7 @@ buildPageWithBack refs subject currentTitle others prepared hasBack=do
     typeName=T.pack (show (subjectType subject))
     action (Inspect target)=Navigate target
     action (OpenFile path)=OpenPath path
+    action (OpenAt path row column expected)=OpenSite path row column expected
     detail (index,(label,body,act))=do
       node<-pure (Tree.nodeId (T.pack (maybe "r" (const "a") act<>show index)))
       text<-W.prepareTextWindow "Details" (T.take maxDetail body)
@@ -172,7 +177,17 @@ inspectWithHistory inspector context subject requested history=do
 -- | Follow an exact live row, preserving history across navigation and view
 -- switches. Back consumes one location, so it cannot create a Back/Back loop.
 followInspectorRow :: Inspector -> InspectContext -> W.WindowRef -> Tree.NodeId -> IO (Either Text W.WindowUpdate)
-followInspectorRow inspector context reference node
+followInspectorRow inspector context reference node=do
+  followed<-followInspectorAction inspector context reference node
+  pure $ case followed of
+    Right (Opened update)->Right update
+    Right Jump{}->Left "That row opens a source location, not an inspector page."
+    Left err->Left err
+
+-- | As 'followInspectorRow', but a source-location row yields 'Jump' once its
+-- page's own subject still resolves. The host verifies the location text.
+followInspectorAction :: Inspector -> InspectContext -> W.WindowRef -> Tree.NodeId -> IO (Either Text Followed)
+followInspectorAction inspector context reference node
   | inspectOrigin context/=Menu.HumanMenu=pure (Left "Inspector navigation requires human input.")
   | otherwise=do
       action<-pageAction inspector reference node
@@ -185,6 +200,14 @@ followInspectorRow inspector context reference node
           (subject,view):earlier->enter subject view earlier
           []->pure (Left "No earlier inspector location.")
         Just (OpenPath _)->pure (Left "Open files from the Files or Package tree.")
+        Just (OpenSite path row column expected)->case trail of
+          (subject,_):_->do
+            resolved<-resolve (inspectorViews inspector) subject
+            pure $ case resolved of
+              Fresh _->Right (Jump path row column expected)
+              Gone->Left "That object no longer exists; reopen the inspector."
+              RootRetired->Left "That object's source is no longer available."
+          []->pure (Left "Inspector row expired; reopen it.")
         Nothing->pure (Left "Inspector row expired; reopen it.")
   where
     enter subject view earlier=do
@@ -192,4 +215,4 @@ followInspectorRow inspector context reference node
       case resolved of
         Gone->pure (Left "That object no longer exists; reopen the inspector.")
         RootRetired->pure (Left "That object's source is no longer available.")
-        Fresh current->inspectWithHistory inspector context current view earlier
+        Fresh current->fmap Opened <$> inspectWithHistory inspector context current view earlier
