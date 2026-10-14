@@ -26,3 +26,7 @@ without external input. Not emitting WORKFLOW_COMPLETE. Next: provide HLS, run t
 ## Iteration 4
 Only checked PATH/THC_EDIT_HLS again (still absent). No new work possible. Not emitting WORKFLOW_COMPLETE.
 Next: provide HLS (GHC 9.14.1) on PATH or THC_EDIT_HLS, run `node test/inspector-symbol-workflow.mjs`, commit evidence.json.
+
+## Iteration 5
+PATH/THC_EDIT_HLS re-checked: still no HLS. No new work possible. Not emitting WORKFLOW_COMPLETE.
+Next: provide HLS (GHC 9.14.1), run `node test/inspector-symbol-workflow.mjs`, commit evidence.json.
