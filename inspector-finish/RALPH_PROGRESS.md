@@ -44,3 +44,9 @@ download them. This is true at the baseline commit too. See OPEN_QUESTIONS.md.
 
 ## Final audit (iteration 1, re-verified)
 Build exit 0; inspector-checks PASS; no stray cabal bench processes; work committed in 263ec93. Only open item is P2 (environmental).
+
+## Final verification (re-run)
+- build (`cabal build all --offline -j2 -f-window -f-web -f-terminal`): OK.
+- inspector-checks: PASS (core, window, package sidebar incl. cancellation).
+- inspector_ui (`node /sandbox/ralph-validation/inspector-ui-smoke.mjs`): all 11 steps PASS, clean exit.
+- docs/running.md documents Inspect usage. No stray subprocesses.

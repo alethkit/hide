@@ -84,6 +84,32 @@ is available. Basic builds capture output without interactive input; **Run >
 Stop build/run** stops a captured run. All commands execute on the session host,
 including over SSH. Detaching the display leaves an active build or run intact.
 
+## Inspect packages and components
+
+Cabal packages appear by name in the shared left sidebar, below Files, Sessions,
+Debug, Watches and Agents. For this repository, the package row is **hide**.
+Collapse **Files** if its contents push the package row out of view. There is no
+separate Packages entry in the Window menu.
+
+Right-click the package row and choose **Inspect** to open its component list.
+Alternatively, expand the package row, right-click a component such as
+**exe:hide**, and choose **Inspect** to go directly to its sources.
+
+Select an inspector row to read its **Details**. Right-click a component or
+source declaration and choose **Open** to inspect that object in another window.
+Use the same **Open** action on **→ Declaration view** or **→ Sources view** to
+switch the view of a component. Selecting a row alone changes its Details; it
+does not navigate.
+
+These views describe Cabal declarations. Conditional branches are counted but
+are not flattened into the unconditional source list. Source declaration rows
+open semantic details; use the Files or package tree to open source code.
+
+Package discovery currently reads the `.cabal` files directly in the sidebar's
+selected directory, not every package named by `cabal.project`. To inspect a
+nested package such as `hide-plugin-api`, use **File > Change dir** to select
+`packages/hide-plugin-api`.
+
 ## Shells and output
 
 **File > Terminal** opens the configured shell in the project directory.
