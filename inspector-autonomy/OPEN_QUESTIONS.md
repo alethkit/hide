@@ -27,3 +27,5 @@ No unresolved P0 or P1 items.
   (see RESULTS.md).
 * `inspector-ui-smoke.mjs` still collapses Files and uses 120x60 (kept as-is to preserve its steps); the new script covers the
   uncollapsed 120x40 case.
+* Iteration 3: one `check-deliverables.mjs` invocation crashed with a Node stack trace (its `git` call; cause not captured, HYPOTHESIS:
+  transient git lock from another campaign's runner); 5 reruns passed. The old smoke had one flaky failure, hardened (RESULTS.md addendum).
