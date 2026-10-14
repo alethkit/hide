@@ -20,7 +20,7 @@
   "commands": {
     "build": "cabal build --offline -j1 -f-window -f-web -f-terminal exe:hide (up to date); cabal test --offline -j1 -f-window -f-web -f-terminal inspector-checks (PASS)",
     "tests": "node test/inspector-hls-hide.mjs (PASS, writes /sandbox/hide-hls-scripted-check.json); node test/inspector-ui-smoke.mjs (19 PASS); node test/inspector-sidebar-scroll.mjs (PASS)",
-    "ui": "GHCRTS='-A16m -c' node inspector-hls-autonomy/hide-session.mjs start --size=120x40 --env XDG_CACHE_HOME=/sandbox/hls-cache/cache --env CABAL_CONFIG=/sandbox/hls-cache/cabal-config src/Hide/Sidebar.hs; then one call per shell command (see evidence/tool-calls.jsonl seq 91-134)"
+    "ui": "GHCRTS='-A16m -c' node inspector-hls-autonomy/hide-session.mjs start --size=120x40 --env XDG_CACHE_HOME=/sandbox/hls-cache/cache --env CABAL_CONFIG=/sandbox/hls-cache/cabal-config src/Hide/Sidebar.hs; then one call per shell command (see evidence/tool-calls.jsonl seq 135-165)"
   },
   "limitations": [
     "The setup needs about 1.5 GB of free RAM; on this 2 GB, no-swap machine the editor and HLS together leave little headroom and an earlier session lost its language server to the kernel OOM killer before GHCRTS was applied.",
