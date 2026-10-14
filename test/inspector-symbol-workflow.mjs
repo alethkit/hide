@@ -42,7 +42,7 @@ const flags = { realHls: false, renderedSymbolUI: false, registeredAgentTool: fa
 const evidence = { mode: fakeMode ? 'fake-lsp (NOT real HLS)' : 'real-hls', ...flags, commands: [], ui: [], agent: [], access: [] };
 const logs = [];
 const log = text => { logs.push(text); };
-let state, child, bridge;
+let state, child, bridge, sessionId;
 
 function finish(code, blocker) {
   if (blocker) { evidence.blocker = blocker; console.error('BLOCKED: ' + blocker); }
@@ -55,6 +55,15 @@ function finish(code, blocker) {
   process.exit(code);
 }
 function cleanup() {
+  // The remote daemon outlives its client; stop it and its language server by session id.
+  try {
+    const list = command => spawnSync('pgrep', command, { encoding: 'utf8' }).stdout.split('\n').filter(Boolean).map(Number);
+    if (sessionId) for (const pid of list(['-f', sessionId])) {
+      if (pid === process.pid) continue;
+      for (const kid of list(['-P', String(pid)])) try { process.kill(kid, 'SIGTERM'); } catch {}
+      try { process.kill(pid, 'SIGTERM'); } catch {}
+    }
+  } catch {}
   try { bridge?.stdin.end(); bridge?.kill('SIGTERM'); } catch {}
   try { if (child && child.exitCode === null) process.kill(-child.pid, 'SIGTERM'); } catch {}
   try { if (state) rmSync(state, { recursive: true, force: true }); } catch {}
@@ -128,7 +137,7 @@ writeFileSync(privateFile, "# authority file\n");
 
 child = spawn(binary, ['--remote'], { cwd: repo, env, detached: true, stdio: ['pipe', 'pipe', 'pipe'] });
 let buffer = Buffer.alloc(0), rows = [], lastFrame = 0, serial = 0, received = 0, protocolError, closed = false, exitCode;
-const sessionId = randomBytes(24).toString('hex');
+sessionId = randomBytes(24).toString('hex');
 function send(value) { const data = Buffer.from(JSON.stringify(value)); const header = Buffer.alloc(5); header.writeUInt32BE(data.length + 1); child.stdin.write(Buffer.concat([header, data])); }
 child.stdout.on('data', chunk => {
   buffer = Buffer.concat([buffer, chunk]);
