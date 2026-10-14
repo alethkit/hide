@@ -17,3 +17,7 @@ build/
 
 # Optional native System-1 tokenizer build.
 cbits/system-one-tokenizer/target/
+
+# Local Ralph runtime state and transient editor logs.
+**/.ralph-runner/
+inspector-workflow/logs/
