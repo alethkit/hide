@@ -1,0 +1,15 @@
+{
+  "mode": "real-hls",
+  "realHls": false,
+  "renderedSymbolUI": false,
+  "registeredAgentTool": false,
+  "definitionFollowed": false,
+  "referencesFollowed": false,
+  "backVerified": false,
+  "accessChecksPassed": false,
+  "commands": [],
+  "ui": [],
+  "agent": [],
+  "access": [],
+  "blocker": "No installed haskell-language-server-wrapper found (searched $THC_EDIT_HLS, PATH, ~/.ghcup/bin, ~/.local/bin). Next action: provide a GHC 9.14.1-compatible HLS on PATH or via THC_EDIT_HLS and rerun this command. Nothing is downloaded or installed."
+}

@@ -135,6 +135,7 @@ checks=do
   check "primes and underscores belong to names" (sym "x_1' y" 1==Just ("x_1'",0))
   check "operators are symbols" (sym "a <+> b" 3==Just ("<+>",2))
   check "numeric literals are not symbols" (sym "x = 42" 5==Nothing)
+  check "comment markers and reserved syntax are not symbols" (sym "-- note" 1==Nothing && sym "x = 1" 2==Nothing && sym "a -> b" 3==Nothing && sym "a - b" 2==Just ("-",2))
   check "space between tokens is not a symbol" (sym "a  b" 2==Nothing && sym "" 0==Nothing)
   check "positions outside the text select nothing" (sym "abc" (-1)==Nothing && sym "abc" 9==Nothing)
 

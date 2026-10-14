@@ -46,9 +46,10 @@ newtype ReportId = ReportId Int deriving (Eq,Ord,Show)
 -- are different things and are described differently.
 data Outcome a = Available a | Empty !Text | Unavailable !Text deriving (Eq,Show)
 
--- | A source position: 1-based line, 1-based column in Unicode code points,
--- and the trimmed line text observed when the report was built.
-data Site = Site { sitePath :: !FilePath, siteLine :: !Int, siteColumn :: !Int, siteText :: !Text }
+-- | A source position: its absolute path, the path relative to the report's
+-- project root for display, a 1-based line, a 1-based column in Unicode code
+-- points and the trimmed line text observed when the report was built.
+data Site = Site { sitePath :: !FilePath, siteRelative :: !FilePath, siteLine :: !Int, siteColumn :: !Int, siteText :: !Text }
   deriving (Eq,Ord,Show)
 
 data Report = Report
@@ -100,8 +101,8 @@ relativePath root path
   | addTrailingPathSeparator root `isPrefixOf` path=makeRelative root path
   | otherwise=path
 
-siteLabel :: FilePath -> Site -> Text
-siteLabel root site=T.pack (relativePath root (sitePath site))<>":"<>T.pack (show (siteLine site))<>":"<>T.pack (show (siteColumn site))
+siteLabel :: Site -> Text
+siteLabel site=T.pack (siteRelative site)<>":"<>T.pack (show (siteLine site))<>":"<>T.pack (show (siteColumn site))
 
 -- | The Haskell identifier or operator at a 0-based offset, with the offset of
 -- its first character. A caret just past the end of a name selects that name.
@@ -118,10 +119,14 @@ symbolAt text offset
       let same c=classify c==Just kind
           start=anchor-T.length (T.takeWhileEnd same (T.take anchor text))
           name=T.takeWhile same (T.drop start text)
-      if isDigit (T.head name) && kind==Identifier then Nothing else Just (name,start)
+      if (isDigit (T.head name) && kind==Identifier) || reserved name then Nothing else Just (name,start)
   where
     kindAt n | n<0 || n>=T.length text=Nothing
              | otherwise=classify (T.index text n)
+
+-- | Dashes alone open a line comment, and `|` or `=` alone are syntax, not names.
+reserved :: Text -> Bool
+reserved name=(T.length name>=2 && T.all (=='-') name) || name `elem` ["=","|","->","<-","=>","::","\\","~","@"]
 
 data Kind = Identifier | Operator deriving (Eq,Show)
 
@@ -172,7 +177,7 @@ relation noun edgeOf outcomeOf here=Ready (List (reportSymbol report<>" — "<>h
       Available sites->countWord (length sites) noun
       _->"no "<>noun<>"s"
     rows=case outcomeOf report of
-      Available _->[Item (siteLabel (reportRoot report) site) (siteText site) (Just (Inspect (Subject child)))
+      Available _->[Item (siteLabel site) (siteText site) (Just (Inspect (Subject child)))
                    | child<-follow edgeOf here,let site=hereValue child]
                    ++[Item "Omitted" (omittedNote report) Nothing | reportOmitted report>0]
       other->[Item (noun'<>" not available") (maybe "" id (outcomeNote other)<>omittedNote report) Nothing]
@@ -180,7 +185,7 @@ relation noun edgeOf outcomeOf here=Ready (List (reportSymbol report<>" — "<>h
 
 -- | One site, with a row that opens it in the editor and one that quotes it.
 siteSource :: Here Site -> Body
-siteSource here=Ready (List (role<>": "<>T.pack (sitePath site)<>":"<>T.pack (show (siteLine site))<>":"<>T.pack (show (siteColumn site)))
+siteSource here=Ready (List (role<>": "<>siteLabel site)
   [ Item "Open in editor" ("Jump to line "<>T.pack (show (siteLine site))<>", column "<>T.pack (show (siteColumn site))<>"\n"<>siteText site)
       (Just (OpenAt (sitePath site) (siteLine site) (siteColumn site) (siteText site)))
   , Item ("Source line "<>T.pack (show (siteLine site))) (siteText site) Nothing ])

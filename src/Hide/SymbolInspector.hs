@@ -206,7 +206,7 @@ siteOutcome env noun (Right answer)=do
         pure $ case buffer of
           Just b | row>=0 && row<bufferLineCount b->
             let line=T.dropWhileEnd (=='\r') (bufferLineAt b row)
-            in Right (Site file (row+1) (1+L.positionOffset line (0,col16)) (snippet line))
+            in Right (Site file (relativePath (envProject env) file) (row+1) (1+L.positionOffset line (0,col16)) (snippet line))
           _->Left ()
       _->pure (Left ())
   let found=nub (sortOn (\s->(sitePath s,siteLine s,siteColumn s)) [site | Right site<-resolved])
