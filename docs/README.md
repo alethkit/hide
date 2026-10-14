@@ -27,7 +27,7 @@ window or a browser, locally or over SSH.
 
 | Task | Guide |
 | --- | --- |
-| Inspect types, follow definitions, rename and handle diagnostics | [Haskell language tools](haskell.md) |
+| Inspect types and symbols, follow definitions and references, rename and handle diagnostics | [Haskell language tools](haskell.md) |
 | Run a program, use a shell, attach a debugger | [Running and debugging](running.md) |
 | Review, commit, fetch, pull and merge | [Git](git.md) |
 | Give an agent access to the live editor and its tools | [Session tools](session-tools.md) |

@@ -32,6 +32,7 @@ interface; language requests do not stop you editing.
 | --- | --- |
 | Inspect the type at the cursor | Shift+F1 (⇧F1 on Mac) or Tools > Inspect type |
 | Follow a definition | F12 or Search > Go to definition |
+| Inspect a symbol: type, definitions, references | Shift+F12 (⇧F12 on Mac) or Tools > Inspect symbol |
 | Complete an identifier | Ctrl+Space (⌃Space on Mac) or Edit > Complete identifier |
 | Rename a symbol | Right-click source, then Rename |
 | Quick fixes and refactorings | Tools > Code actions or right-click source, then Code actions |
@@ -45,6 +46,54 @@ Review those buffers and save them to write the result to disk. If a buffer or
 disk file changed while the request was pending, the editor rejects the stale
 edit. Text edits are supported; HLS file creation/deletion operations and
 executable completion commands are not applied. Completion snippets are disabled.
+
+## Inspect a symbol
+
+Put the cursor on a name or operator in a saved Haskell source file and choose
+**Tools > Inspect symbol**, press Shift+F12 (⇧F12 on Mac), or right-click the
+source and choose **Inspect symbol**. The editor asks HLS for the type, the
+definitions and the references of that symbol in one bounded, cancellable
+request, using the live text of your buffer, and opens the inspector window
+when the answers arrive.
+
+The window has three views, each reached from an **→ … view** row (right-click
+the row, then **Open**):
+
+| View | Shows |
+| --- | --- |
+| Summary | Name, location, source revision, the type HLS reported, and how many definitions and references exist |
+| Definitions | One row per definition as `path:line:column` with the source line |
+| References | One row per use, with the same detail |
+
+Open a definition or reference row to see its **site page**: it quotes the
+source line and offers **Open in editor**, which moves the cursor to that exact
+line and column. **← Back** returns to the view you were looking at, not to the
+summary. A site is checked against the current text before jumping, so a line
+that changed since the inspection is refused rather than replaced by an
+unrelated location. Editing, closing or making the buffer private ends the
+inspection; run Inspect symbol again.
+
+Nothing is guessed. A caret on whitespace, a number or a comment marker says
+there is no symbol. If HLS is not running or answers with an error, each
+relation says so with the server's message; an empty answer says "no definition
+found" and is not shown as an error. A buffer that has never been saved has no path and is refused.
+Locations outside the workspace and protected files are omitted and counted.
+
+An agent investigates the same symbol with the `inspect_symbol` tool; see
+[Inspect a symbol](agent-tools.md#inspect-a-symbol).
+
+### Check the workflow end to end
+
+`node test/inspector-symbol-workflow.mjs` builds the editor and the focused
+checks, drives the real editor through the remote display protocol to inspect
+`area` in `test/inspector-fixture`, follows its definition and references, goes
+Back, then calls the registered `inspect_symbol` tool through the MCP bridge
+with a scripted client (not an LLM session) and writes
+`inspector-workflow/evidence.json`. It needs an installed
+`haskell-language-server-wrapper` built for the project's GHC, on `PATH` or in
+`THC_EDIT_HLS`; without one it exits nonzero and records the blocker. With
+`--fake-lsp` it runs against `test/fake-lsp.mjs` and writes
+`evidence.fake-lsp.json`, which is a regression run, never a real-HLS result.
 
 ## Code actions
 

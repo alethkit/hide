@@ -155,6 +155,54 @@ paths and revisions; this is not isolation from a malicious language server.
 `appliedBatches` counts accepted batches, including empty or no-op batches;
 `buffers` lists only changed buffer revisions.
 
+## Inspect a symbol
+
+`inspect_symbol` (kind R, read-only, open-world false) gives an agent the same
+semantic views the human sees in Tools > Inspect symbol: Summary (type),
+Definitions and References of one Haskell symbol, from the existing HLS
+hover/definition/references workers on live unsaved text. It is an ordinary
+registered tool: it passes the same access admission, workspace and private
+buffer policy, and capability checks as `lsp_hover`.
+
+| Action | Arguments | Result |
+| --- | --- | --- |
+| `discover` | `bufferId?`, `line?`, `column?` | Available actions and views, this caller's open pages and, with a position, whether a symbol is there (`position.eligible`, `symbol`, `revision`) |
+| `inspect` | `bufferId`, `line`, `column`, `revision?` | A page: `page` token, `document` (the rows the human sees), `report` (symbol, revision, per-relation `status` of `available`, `empty` or `unavailable` with `count` or `message`), `view`, `views` |
+| `view` | `page`, `view` | The same inspection in another view (`hide.symbol.summary`, `hide.symbol.definitions`, `hide.symbol.references`) |
+| `follow` | `page`, `row` | The object that row names. A site row opens a site page; the site page's `open-source` row returns `location` (`path`, `line`, `column`, `text`, `verified`) after re-checking the current text |
+| `back` | `page` | The page this one came from, with the view that was current there |
+
+Positions are 1-based Unicode code points. `document.items[n].action` is
+non-null for rows that can be followed, and `row` is the index in that page's
+`items`; row numbers are local to one page. Pages are opaque tokens bound to the
+caller, the inspection, the buffer revision and a 15 minute lifetime. An edit,
+close or private change of the buffer, a forged or foreign token, a stale
+`revision`, a row without an action and a location whose line changed are all
+refused; nothing is retargeted. Private buffers and files outside the workspace
+are refused or omitted. At most a few inspections run concurrently; a refused
+request says so. Cancelling the waiting request cancels its HLS requests.
+
+Example investigation of `area` (abridged):
+
+```json
+{"action":"inspect","bufferId":1,"line":9,"column":10}
+→ {"page":"3878…","report":{"symbol":"area","revision":0,
+    "hover":{"status":"available"},
+    "definitions":{"status":"available","count":1},
+    "references":{"status":"available","count":7}},
+   "view":"hide.symbol.summary","views":[…]}
+{"action":"view","page":"3878…","view":"hide.symbol.definitions"}
+{"action":"follow","page":"<definitions page>","row":0}      → site page
+{"action":"follow","page":"<site page>","row":0}
+→ {"location":{"path":"…/src/Shapes.hs","line":9,"column":1,
+    "text":"area :: Shape -> Double","verified":true}}
+{"action":"back","page":"<site page>"}                       → definitions view
+```
+
+A grounded explanation cites `path:line` from `location` results only.
+`test/inspector-symbol-workflow.mjs` runs this investigation through the MCP
+bridge and records it in `inspector-workflow/evidence.json`.
+
 ## Build, test and execution
 
 | Tool | Kind | Arguments | Result / contract |
