@@ -1,13 +1,44 @@
-$ cabal build hide:test:inspector-checks --offline -j2 -f-window -f-web -f-terminal  [508 ms, exit 0]
-Up to date
+$ cabal build hide:test:inspector-checks --offline -j2 -f-window -f-web -f-terminal  [6216 ms, exit 0]
+Build profile: -w ghc-9.14.1 -O1
+In order, the following will be built (use -v for more details):
+ - hide-agent-api-0.1.0.0 (lib) (configuration changed)
+ - hide-plugin-api-0.1.0.0 (lib) (configuration changed)
+ - hide-acp-0.1.0.0 (lib) (configuration changed)
+ - hide-0.1.0.0 (lib) (configuration changed)
+ - hide-0.1.0.0 (test:inspector-checks) (configuration changed)
+Configuring library for hide-agent-api-0.1.0.0...
+Preprocessing library for hide-agent-api-0.1.0.0...
+Building library for hide-agent-api-0.1.0.0...
+Configuring library for hide-plugin-api-0.1.0.0...
+Configuring library for hide-acp-0.1.0.0...
+Preprocessing library for hide-plugin-api-0.1.0.0...
+Building library for hide-plugin-api-0.1.0.0...
+Preprocessing library for hide-acp-0.1.0.0...
+Building library for hide-acp-0.1.0.0...
+Configuring library for hide-0.1.0.0...
+Preprocessing library for hide-0.1.0.0...
+Building library for hide-0.1.0.0...
+Configuring test suite 'inspector-checks' for hide-0.1.0.0...
+Preprocessing test suite 'inspector-checks' for hide-0.1.0.0...
+Building test suite 'inspector-checks' for hide-0.1.0.0...
 
-$ cabal build hide:exe:hide --offline -j2 -f-window -f-web -f-terminal  [195 ms, exit 0]
-Up to date
+$ cabal build hide:exe:hide --offline -j2 -f-window -f-web -f-terminal  [5248 ms, exit 0]
+Build profile: -w ghc-9.14.1 -O1
+In order, the following will be built (use -v for more details):
+ - hide-agents-0.1.0.0 (lib) (configuration changed)
+ - hide-0.1.0.0 (exe:hide) (configuration changed)
+Configuring library for hide-agents-0.1.0.0...
+Preprocessing library for hide-agents-0.1.0.0...
+Building library for hide-agents-0.1.0.0...
+Configuring executable 'hide' for hide-0.1.0.0...
+Preprocessing executable 'hide' for hide-0.1.0.0...
+Building executable 'hide' for hide-0.1.0.0...
+[2 of 2] Linking dist-newstyle/build/aarch64-linux/ghc-9.14.1/hide-0.1.0.0/x/hide/build/hide/hide [Flags changed]
 
-$ cabal list-bin hide:test:inspector-checks --offline -j2 -f-window -f-web -f-terminal  [188 ms, exit 0]
+$ cabal list-bin hide:test:inspector-checks --offline -j2 -f-window -f-web -f-terminal  [301 ms, exit 0]
 /sandbox/hide/dist-newstyle/build/aarch64-linux/ghc-9.14.1/hide-0.1.0.0/t/inspector-checks/build/inspector-checks/inspector-checks
 
-$ /sandbox/hide/dist-newstyle/build/aarch64-linux/ghc-9.14.1/hide-0.1.0.0/t/inspector-checks/build/inspector-checks/inspector-checks   [3771 ms, exit 0]
+$ /sandbox/hide/dist-newstyle/build/aarch64-linux/ghc-9.14.1/hide-0.1.0.0/t/inspector-checks/build/inspector-checks/inspector-checks   [3896 ms, exit 0]
 original inspector specification checks passed (independent extensions, UI/JSON, navigation history)
 typed inspector core checks passed
 inspector window checks passed
@@ -177,7 +208,7 @@ symbol inspector checks passed (fake language server; not a real-HLS result)
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═ 9:13 ◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Copy this file’s path, line and column as plain text.                               THC ▼  │ main* +9193 -40 
+ F1 Help | Copy this file’s path, line and column as plain text.                               THC ▼  │ main* +7292 -12 
 --- symbol inspector page is rendered for area (Summary view)
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ════════════════════════════3═[↑]══╗
@@ -218,7 +249,7 @@ symbol inspector checks passed (fake language server; not a real-HLS result)
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Inspecting area…                                                                    THC ▼  │ main* +9193 -40 
+ F1 Help | Inspecting area…                                                                    THC ▼  │ main* +7292 -12 
 HLS not ready (attempt 1); retrying
 --- fixture source is visible again before retry
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
@@ -260,7 +291,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═ 9:13 ◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Inspecting area…                                                                    THC ▼  │ main* +9193 -40 
+ F1 Help | Inspecting area…                                                                    THC ▼  │ main* +7292 -12 
 --- source context menu offers Inspect symbol
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════════ Main.hs ══════════════════════════════════════1═[↑]══╗
@@ -301,7 +332,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═ 9:13 ◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Copy this file’s path, line and column as plain text.                               THC ▼  │ main* +9193 -40 
+ F1 Help | Copy this file’s path, line and column as plain text.                               THC ▼  │ main* +7292 -12 
 --- symbol inspector page is rendered for area (Summary view)
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ════════════════════════════4═[↑]══╗
@@ -342,7 +373,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Inspecting area…                                                                    THC ▼  │ main* +9193 -40 
+ F1 Help | Inspecting area…                                                                    THC ▼  │ main* +7292 -12 
 --- the Type row shows a type signature from HLS
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ════════════════════════════4═[↑]══╗
@@ -383,7 +414,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Inspecting area…                                                                    THC ▼  │ main* +9193 -40 
+ F1 Help | Inspecting area…                                                                    THC ▼  │ main* +7292 -12 
 --- summary counts definitions
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ════════════════════════════4═[↑]══╗
@@ -424,7 +455,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Inspecting area…                                                                    THC ▼  │ main* +9193 -40 
+ F1 Help | Inspecting area…                                                                    THC ▼  │ main* +7292 -12 
 --- summary counts references
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ════════════════════════════4═[↑]══╗
@@ -465,7 +496,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Inspecting area…                                                                    THC ▼  │ main* +9193 -40 
+ F1 Help | Inspecting area…                                                                    THC ▼  │ main* +7292 -12 
 --- row menu for Definitions view row
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ════════════════════════════4═[↑]══╗
@@ -506,7 +537,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- Definitions view lists one definition
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════ area — 1 definition ══════════════════════════════5═[↑]══╗
@@ -547,7 +578,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- row menu for definition row
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════ area — 1 definition ══════════════════════════════5═[↑]══╗
@@ -588,7 +619,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- definition site page
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════ Definition: src/Shapes.hs:10:1 ═════════════════════════6═[↑]══╗
@@ -629,7 +660,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- site page offers Open in editor
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════ Definition: src/Shapes.hs:10:1 ═════════════════════════6═[↑]══╗
@@ -670,7 +701,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- row menu for Back row
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════ Definition: src/Shapes.hs:10:1 ═════════════════════════6═[↑]══╗
@@ -711,7 +742,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- Back restores the Definitions view the user chose
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════ area — 1 definition ══════════════════════════════7═[↑]══╗
@@ -752,7 +783,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- row menu for References view row
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════ area — 1 definition ══════════════════════════════7═[↑]══╗
@@ -793,7 +824,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- References view lists the uses
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════ area — 7 references ══════════════════════════════8═[↑]══╗
@@ -834,7 +865,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- row menu for reference row
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════ area — 7 references ══════════════════════════════8═[↑]══╗
@@ -875,7 +906,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- reference site page
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════ Reference: app/Main.hs:5:27 ══════════════════════════9═[↑]══╗
@@ -916,7 +947,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- row menu for Back row from reference
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════ Reference: app/Main.hs:5:27 ══════════════════════════9═[↑]══╗
@@ -957,7 +988,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- Back restores the References view
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════ area — 7 references ═════════════════════════════10═[↑]══╗
@@ -998,7 +1029,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- row menu for reference row (again)
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════ area — 7 references ═════════════════════════════10═[↑]══╗
@@ -1039,7 +1070,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- reference site page (again)
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════ Reference: app/Main.hs:5:27 ═════════════════════════11═[↑]══╗
@@ -1080,7 +1111,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- row menu for Open in editor
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════ Reference: app/Main.hs:5:27 ═════════════════════════11═[↑]══╗
@@ -1121,7 +1152,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- editor caret is at the reference app/Main.hs:5:27
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════════ Main.hs ══════════════════════════════════════1═[↑]══╗
@@ -1162,7 +1193,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═ 5:27 ◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- Shift+F12 also inspects the symbol
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ═══════════════════════════12═[↑]══╗
@@ -1203,7 +1234,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Inspecting area…                                                                    THC ▼  │ main* +9193 -40 
+ F1 Help | Inspecting area…                                                                    THC ▼  │ main* +7292 -12 
 --- row menu for Definitions view row (second run)
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════════ area — app/Main.hs:9:10 ═══════════════════════════12═[↑]══╗
@@ -1244,7 +1275,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- Definitions view again
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════ area — 1 definition ═════════════════════════════13═[↑]══╗
@@ -1285,7 +1316,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- row menu for definition row (second run)
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═════════════════════════════════ area — 1 definition ═════════════════════════════13═[↑]══╗
@@ -1326,7 +1357,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- definition site page (second run)
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════ Definition: src/Shapes.hs:10:1 ════════════════════════14═[↑]══╗
@@ -1367,7 +1398,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- row menu for Open in editor (definition)
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════ Definition: src/Shapes.hs:10:1 ════════════════════════14═[↑]══╗
@@ -1408,7 +1439,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +9193 -40 
+ F1 Help | Run the selected extension action.                                                  THC ▼  │ main* +7292 -12 
 --- the definition file is now the active editor buffer
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ╔═[■]═══════════════════════════ Definition: src/Shapes.hs:10:1 ════════════════════════14═[↑]══╗
@@ -1449,7 +1480,7 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 --- editor caret is at the definition src/Shapes.hs:10:1
   File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
                    [←] ┌─────────────────────────────── Definition: src/Shapes.hs:10:1 ────────────────────────14──────┐
@@ -1490,29 +1521,29 @@ HLS not ready (attempt 1); retrying
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═ 10:1 ◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 list_buffers: [{"binary":false,"bufferId":1,"modified":false,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","revision":0,"title":"/sandbox/hide/test/inspector-fixture/app/Main.hs"},{"binary":false,"bufferId":2,"modified":false,"path":null,"revision":0,"title":"[private]"},{"binary":false,"bufferId":15,"modified":false,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","revision":0,"title":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"}]
 agent discover position: {"ok":true,"value":{"actions":["discover","inspect","view","follow","back"],"limits":{"locations":200,"pageLifetimeSeconds":900,"pages":64,"reports":32},"pages":[],"position":{"column":10,"eligible":true,"line":9,"revision":0,"symbol":"area"},"tool":"inspect_symbol","views":[{"id":"hide.symbol.summary","object":"report","title":"Summary"},{"id":"hide.symbol.definitions","object":"report","title":"Definitions"},{"id":"hide.symbol.references","object":"report","title":"References"},{"id":"hide.site.source","object":"site","title":"Source"}]}}
-agent inspect area (try 1): {"ok":true,"value":{"back":null,"document":{"items":[{"action":null,"detail":"Name: area\nLocation: app/Main.hs:9:10\nSource revision: 0","label":"Symbol"},{"action":null,"detail":"area :: Shape → Double Go to [Shape](file:///sandbox/hide/test/inspector-fixture/src/Shapes.hs#L6) *Defined at /sandbox/hide/test/inspector-fixture/src/Shapes.hs:10:1* The area of one shape.","label":"Type"},{"action":null,"detail":"Switch to the Definitions view to follow them.","label":"Definitions: 1"},{"action":null,"detail":"Switch to the References view to follow them.","label":"References: 7"}],"kind":"list","title":"area — app/Main.hs:9:10"},"omitted":0,"page":"16c145530f46048933855fcfb9aba7cf0d03c1d3d1ceeb56","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.symbol.summary","views":[{"current":true,"id":"hide.symbol.summary","title":"Summary"},{"current":false,"id":"hide.symbol.definitions","title":"Definitions"},{"current":false,"id":"hide.symbol.references","title":"References"}]}}
-agent view definitions: {"ok":true,"value":{"back":null,"document":{"items":[{"action":{"id":0,"kind":"inspect","type":"Site"},"detail":"area (Circle r) = 3 * r * r","label":"src/Shapes.hs:10:1"}],"kind":"list","title":"area — 1 definition"},"omitted":0,"page":"d4f93abaf2725c4def6af9b040eb548473c5678f2380b2f5","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.symbol.definitions","views":[{"current":false,"id":"hide.symbol.summary","title":"Summary"},{"current":true,"id":"hide.symbol.definitions","title":"Definitions"},{"current":false,"id":"hide.symbol.references","title":"References"}]}}
-agent follow the definition row: {"ok":true,"value":{"back":"d4f93abaf2725c4def6af9b040eb548473c5678f2380b2f5","document":{"items":[{"action":{"column":1,"id":0,"kind":"open-source","line":10,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 10, column 1\narea (Circle r) = 3 * r * r","label":"Open in editor"},{"action":null,"detail":"area (Circle r) = 3 * r * r","label":"Source line 10"}],"kind":"list","title":"Definition: src/Shapes.hs:10:1"},"omitted":0,"page":"db6dce179f3f5be4a1ac92ebe1251409deb597ad36e51e44","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
-agent open the definition location (verified against current text): {"ok":true,"value":{"location":{"column":1,"line":10,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"area (Circle r) = 3 * r * r","verified":true},"page":"db6dce179f3f5be4a1ac92ebe1251409deb597ad36e51e44"}}
-agent back from the definition site: {"ok":true,"value":{"back":null,"document":{"items":[{"action":{"id":0,"kind":"inspect","type":"Site"},"detail":"area (Circle r) = 3 * r * r","label":"src/Shapes.hs:10:1"}],"kind":"list","title":"area — 1 definition"},"omitted":0,"page":"c7bf9a0b0e072b8c773141abb5d6e115a66d371c0849a41e","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.symbol.definitions","views":[{"current":false,"id":"hide.symbol.summary","title":"Summary"},{"current":true,"id":"hide.symbol.definitions","title":"Definitions"},{"current":false,"id":"hide.symbol.references","title":"References"}]}}
-agent view references: {"ok":true,"value":{"back":null,"document":{"items":[{"action":{"id":0,"kind":"inspect","type":"Site"},"detail":"import Shapes (Shape(..), area, totalArea)","label":"app/Main.hs:5:27"},{"action":{"id":1,"kind":"inspect","type":"Site"},"detail":"print (area (Circle 2))","label":"app/Main.hs:9:10"},{"action":{"id":2,"kind":"inspect","type":"Site"},"detail":"module Shapes (Shape(..), area, totalArea) where","label":"src/Shapes.hs:4:27"},{"action":{"id":3,"kind":"inspect","type":"Site"},"detail":"area :: Shape -> Double","label":"src/Shapes.hs:9:1"},{"action":{"id":4,"kind":"inspect","type":"Site"},"detail":"area (Circle r) = 3 * r * r","label":"src/Shapes.hs:10:1"},{"action":{"id":5,"kind":"inspect","type":"Site"},"detail":"area (Rect w h) = w * h","label":"src/Shapes.hs:11:1"},{"action":{"id":6,"kind":"inspect","type":"Site"},"detail":"totalArea = sum . map area","label":"src/Shapes.hs:15:23"}],"kind":"list","title":"area — 7 references"},"omitted":0,"page":"5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.symbol.references","views":[{"current":false,"id":"hide.symbol.summary","title":"Summary"},{"current":false,"id":"hide.symbol.definitions","title":"Definitions"},{"current":true,"id":"hide.symbol.references","title":"References"}]}}
-agent follow reference row 0: {"ok":true,"value":{"back":"5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949","document":{"items":[{"action":{"column":27,"id":0,"kind":"open-source","line":5,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs"},"detail":"Jump to line 5, column 27\nimport Shapes (Shape(..), area, totalArea)","label":"Open in editor"},{"action":null,"detail":"import Shapes (Shape(..), area, totalArea)","label":"Source line 5"}],"kind":"list","title":"Reference: app/Main.hs:5:27"},"omitted":0,"page":"1dc93dba44e532d02dfa3b018abb32883a5380c1bbe10bd5","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
-agent open reference location app/Main.hs:5:27: {"ok":true,"value":{"location":{"column":27,"line":5,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","text":"import Shapes (Shape(..), area, totalArea)","verified":true},"page":"1dc93dba44e532d02dfa3b018abb32883a5380c1bbe10bd5"}}
-agent follow reference row 1: {"ok":true,"value":{"back":"5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949","document":{"items":[{"action":{"column":10,"id":0,"kind":"open-source","line":9,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs"},"detail":"Jump to line 9, column 10\nprint (area (Circle 2))","label":"Open in editor"},{"action":null,"detail":"print (area (Circle 2))","label":"Source line 9"}],"kind":"list","title":"Reference: app/Main.hs:9:10"},"omitted":0,"page":"9a0f820955e8a3e3f525d67609eef8a5af9e99aac7753db1","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
-agent open reference location app/Main.hs:9:10: {"ok":true,"value":{"location":{"column":10,"line":9,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","text":"print (area (Circle 2))","verified":true},"page":"9a0f820955e8a3e3f525d67609eef8a5af9e99aac7753db1"}}
-agent follow reference row 2: {"ok":true,"value":{"back":"5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949","document":{"items":[{"action":{"column":27,"id":0,"kind":"open-source","line":4,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 4, column 27\nmodule Shapes (Shape(..), area, totalArea) where","label":"Open in editor"},{"action":null,"detail":"module Shapes (Shape(..), area, totalArea) where","label":"Source line 4"}],"kind":"list","title":"Reference: src/Shapes.hs:4:27"},"omitted":0,"page":"9b606f748484fb9605bbe89f5b0cdcfda40be8990d586368","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
-agent open reference location src/Shapes.hs:4:27: {"ok":true,"value":{"location":{"column":27,"line":4,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"module Shapes (Shape(..), area, totalArea) where","verified":true},"page":"9b606f748484fb9605bbe89f5b0cdcfda40be8990d586368"}}
-agent follow reference row 3: {"ok":true,"value":{"back":"5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949","document":{"items":[{"action":{"column":1,"id":0,"kind":"open-source","line":9,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 9, column 1\narea :: Shape -> Double","label":"Open in editor"},{"action":null,"detail":"area :: Shape -> Double","label":"Source line 9"}],"kind":"list","title":"Reference: src/Shapes.hs:9:1"},"omitted":0,"page":"ba6ad06648b271353580c86a0abdd6ee9aa1818fa7033abd","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
-agent open reference location src/Shapes.hs:9:1: {"ok":true,"value":{"location":{"column":1,"line":9,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"area :: Shape -> Double","verified":true},"page":"ba6ad06648b271353580c86a0abdd6ee9aa1818fa7033abd"}}
-agent follow reference row 4: {"ok":true,"value":{"back":"5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949","document":{"items":[{"action":{"column":1,"id":0,"kind":"open-source","line":10,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 10, column 1\narea (Circle r) = 3 * r * r","label":"Open in editor"},{"action":null,"detail":"area (Circle r) = 3 * r * r","label":"Source line 10"}],"kind":"list","title":"Reference: src/Shapes.hs:10:1"},"omitted":0,"page":"9a21190ef91ede034808036cc3d00f3f5ad549d9deea0916","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
-agent open reference location src/Shapes.hs:10:1: {"ok":true,"value":{"location":{"column":1,"line":10,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"area (Circle r) = 3 * r * r","verified":true},"page":"9a21190ef91ede034808036cc3d00f3f5ad549d9deea0916"}}
-agent follow reference row 5: {"ok":true,"value":{"back":"5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949","document":{"items":[{"action":{"column":1,"id":0,"kind":"open-source","line":11,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 11, column 1\narea (Rect w h) = w * h","label":"Open in editor"},{"action":null,"detail":"area (Rect w h) = w * h","label":"Source line 11"}],"kind":"list","title":"Reference: src/Shapes.hs:11:1"},"omitted":0,"page":"5f1b01a254b3cc9f1d7a622faa7b0988382da517ba85fe8f","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
-agent open reference location src/Shapes.hs:11:1: {"ok":true,"value":{"location":{"column":1,"line":11,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"area (Rect w h) = w * h","verified":true},"page":"5f1b01a254b3cc9f1d7a622faa7b0988382da517ba85fe8f"}}
-agent follow reference row 6: {"ok":true,"value":{"back":"5f0423ec3a3a66d1212ffc93887ea71fd011864f7fef7949","document":{"items":[{"action":{"column":23,"id":0,"kind":"open-source","line":15,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 15, column 23\ntotalArea = sum . map area","label":"Open in editor"},{"action":null,"detail":"totalArea = sum . map area","label":"Source line 15"}],"kind":"list","title":"Reference: src/Shapes.hs:15:23"},"omitted":0,"page":"2013eb5ae6a1549114d340339e46c896b51276295a5a0c55","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
-agent open reference location src/Shapes.hs:15:23: {"ok":true,"value":{"location":{"column":23,"line":15,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"totalArea = sum . map area","verified":true},"page":"2013eb5ae6a1549114d340339e46c896b51276295a5a0c55"}}
+agent inspect area (try 1): {"ok":true,"value":{"back":null,"document":{"items":[{"action":null,"detail":"Name: area\nLocation: app/Main.hs:9:10\nSource revision: 0","label":"Symbol"},{"action":null,"detail":"area :: Shape → Double Go to [Shape](file:///sandbox/hide/test/inspector-fixture/src/Shapes.hs#L6) *Defined at /sandbox/hide/test/inspector-fixture/src/Shapes.hs:10:1* The area of one shape.","label":"Type"},{"action":null,"detail":"Switch to the Definitions view to follow them.","label":"Definitions: 1"},{"action":null,"detail":"Switch to the References view to follow them.","label":"References: 7"}],"kind":"list","title":"area — app/Main.hs:9:10"},"omitted":0,"page":"81b580d9105b96fe763bb3e77f74bf08ca22e57aad13d598","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.symbol.summary","views":[{"current":true,"id":"hide.symbol.summary","title":"Summary"},{"current":false,"id":"hide.symbol.definitions","title":"Definitions"},{"current":false,"id":"hide.symbol.references","title":"References"}]}}
+agent view definitions: {"ok":true,"value":{"back":null,"document":{"items":[{"action":{"id":0,"kind":"inspect","type":"Site"},"detail":"area (Circle r) = 3 * r * r","label":"src/Shapes.hs:10:1"}],"kind":"list","title":"area — 1 definition"},"omitted":0,"page":"5132ef38414c4d51a165551dd82e51934013a0a10ef37a4f","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.symbol.definitions","views":[{"current":false,"id":"hide.symbol.summary","title":"Summary"},{"current":true,"id":"hide.symbol.definitions","title":"Definitions"},{"current":false,"id":"hide.symbol.references","title":"References"}]}}
+agent follow the definition row: {"ok":true,"value":{"back":"5132ef38414c4d51a165551dd82e51934013a0a10ef37a4f","document":{"items":[{"action":{"column":1,"id":0,"kind":"open-source","line":10,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 10, column 1\narea (Circle r) = 3 * r * r","label":"Open in editor"},{"action":null,"detail":"area (Circle r) = 3 * r * r","label":"Source line 10"}],"kind":"list","title":"Definition: src/Shapes.hs:10:1"},"omitted":0,"page":"3e4949e4a7b0015b2242dfbc94f818112a515d9fbcaa8ade","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
+agent open the definition location (verified against current text): {"ok":true,"value":{"location":{"column":1,"line":10,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"area (Circle r) = 3 * r * r","verified":true},"page":"3e4949e4a7b0015b2242dfbc94f818112a515d9fbcaa8ade"}}
+agent back from the definition site: {"ok":true,"value":{"back":null,"document":{"items":[{"action":{"id":0,"kind":"inspect","type":"Site"},"detail":"area (Circle r) = 3 * r * r","label":"src/Shapes.hs:10:1"}],"kind":"list","title":"area — 1 definition"},"omitted":0,"page":"07080e0f79c0d6da569b048417244d2998f0e658b420d02d","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.symbol.definitions","views":[{"current":false,"id":"hide.symbol.summary","title":"Summary"},{"current":true,"id":"hide.symbol.definitions","title":"Definitions"},{"current":false,"id":"hide.symbol.references","title":"References"}]}}
+agent view references: {"ok":true,"value":{"back":null,"document":{"items":[{"action":{"id":0,"kind":"inspect","type":"Site"},"detail":"import Shapes (Shape(..), area, totalArea)","label":"app/Main.hs:5:27"},{"action":{"id":1,"kind":"inspect","type":"Site"},"detail":"print (area (Circle 2))","label":"app/Main.hs:9:10"},{"action":{"id":2,"kind":"inspect","type":"Site"},"detail":"module Shapes (Shape(..), area, totalArea) where","label":"src/Shapes.hs:4:27"},{"action":{"id":3,"kind":"inspect","type":"Site"},"detail":"area :: Shape -> Double","label":"src/Shapes.hs:9:1"},{"action":{"id":4,"kind":"inspect","type":"Site"},"detail":"area (Circle r) = 3 * r * r","label":"src/Shapes.hs:10:1"},{"action":{"id":5,"kind":"inspect","type":"Site"},"detail":"area (Rect w h) = w * h","label":"src/Shapes.hs:11:1"},{"action":{"id":6,"kind":"inspect","type":"Site"},"detail":"totalArea = sum . map area","label":"src/Shapes.hs:15:23"}],"kind":"list","title":"area — 7 references"},"omitted":0,"page":"c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.symbol.references","views":[{"current":false,"id":"hide.symbol.summary","title":"Summary"},{"current":false,"id":"hide.symbol.definitions","title":"Definitions"},{"current":true,"id":"hide.symbol.references","title":"References"}]}}
+agent follow reference row 0: {"ok":true,"value":{"back":"c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4","document":{"items":[{"action":{"column":27,"id":0,"kind":"open-source","line":5,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs"},"detail":"Jump to line 5, column 27\nimport Shapes (Shape(..), area, totalArea)","label":"Open in editor"},{"action":null,"detail":"import Shapes (Shape(..), area, totalArea)","label":"Source line 5"}],"kind":"list","title":"Reference: app/Main.hs:5:27"},"omitted":0,"page":"6310a9d9b7749c1822f1ceeb07191cfb01816496713a4b62","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
+agent open reference location app/Main.hs:5:27: {"ok":true,"value":{"location":{"column":27,"line":5,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","text":"import Shapes (Shape(..), area, totalArea)","verified":true},"page":"6310a9d9b7749c1822f1ceeb07191cfb01816496713a4b62"}}
+agent follow reference row 1: {"ok":true,"value":{"back":"c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4","document":{"items":[{"action":{"column":10,"id":0,"kind":"open-source","line":9,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs"},"detail":"Jump to line 9, column 10\nprint (area (Circle 2))","label":"Open in editor"},{"action":null,"detail":"print (area (Circle 2))","label":"Source line 9"}],"kind":"list","title":"Reference: app/Main.hs:9:10"},"omitted":0,"page":"f9370cf1d41f66510b1ccb92c2cafac2f20bb7552e516c17","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
+agent open reference location app/Main.hs:9:10: {"ok":true,"value":{"location":{"column":10,"line":9,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","text":"print (area (Circle 2))","verified":true},"page":"f9370cf1d41f66510b1ccb92c2cafac2f20bb7552e516c17"}}
+agent follow reference row 2: {"ok":true,"value":{"back":"c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4","document":{"items":[{"action":{"column":27,"id":0,"kind":"open-source","line":4,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 4, column 27\nmodule Shapes (Shape(..), area, totalArea) where","label":"Open in editor"},{"action":null,"detail":"module Shapes (Shape(..), area, totalArea) where","label":"Source line 4"}],"kind":"list","title":"Reference: src/Shapes.hs:4:27"},"omitted":0,"page":"6c3f436b181fb1df33a82cd8347336ecdcb45ebfb5630a68","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
+agent open reference location src/Shapes.hs:4:27: {"ok":true,"value":{"location":{"column":27,"line":4,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"module Shapes (Shape(..), area, totalArea) where","verified":true},"page":"6c3f436b181fb1df33a82cd8347336ecdcb45ebfb5630a68"}}
+agent follow reference row 3: {"ok":true,"value":{"back":"c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4","document":{"items":[{"action":{"column":1,"id":0,"kind":"open-source","line":9,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 9, column 1\narea :: Shape -> Double","label":"Open in editor"},{"action":null,"detail":"area :: Shape -> Double","label":"Source line 9"}],"kind":"list","title":"Reference: src/Shapes.hs:9:1"},"omitted":0,"page":"dca6c52142beac33a3f9988c0bd89e484ff1fdd1d3bf1f0c","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
+agent open reference location src/Shapes.hs:9:1: {"ok":true,"value":{"location":{"column":1,"line":9,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"area :: Shape -> Double","verified":true},"page":"dca6c52142beac33a3f9988c0bd89e484ff1fdd1d3bf1f0c"}}
+agent follow reference row 4: {"ok":true,"value":{"back":"c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4","document":{"items":[{"action":{"column":1,"id":0,"kind":"open-source","line":10,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 10, column 1\narea (Circle r) = 3 * r * r","label":"Open in editor"},{"action":null,"detail":"area (Circle r) = 3 * r * r","label":"Source line 10"}],"kind":"list","title":"Reference: src/Shapes.hs:10:1"},"omitted":0,"page":"a087ec223e690ad977dabd0b1c5bc42087ea67a5acd03b16","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
+agent open reference location src/Shapes.hs:10:1: {"ok":true,"value":{"location":{"column":1,"line":10,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"area (Circle r) = 3 * r * r","verified":true},"page":"a087ec223e690ad977dabd0b1c5bc42087ea67a5acd03b16"}}
+agent follow reference row 5: {"ok":true,"value":{"back":"c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4","document":{"items":[{"action":{"column":1,"id":0,"kind":"open-source","line":11,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 11, column 1\narea (Rect w h) = w * h","label":"Open in editor"},{"action":null,"detail":"area (Rect w h) = w * h","label":"Source line 11"}],"kind":"list","title":"Reference: src/Shapes.hs:11:1"},"omitted":0,"page":"4aaa1a7787f1b66d3cdd4dc1a50e25fe501062919251a050","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
+agent open reference location src/Shapes.hs:11:1: {"ok":true,"value":{"location":{"column":1,"line":11,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"area (Rect w h) = w * h","verified":true},"page":"4aaa1a7787f1b66d3cdd4dc1a50e25fe501062919251a050"}}
+agent follow reference row 6: {"ok":true,"value":{"back":"c195f7100ca7dd3cc36245253a2b63fa6b0bec98198ce4e4","document":{"items":[{"action":{"column":23,"id":0,"kind":"open-source","line":15,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs"},"detail":"Jump to line 15, column 23\ntotalArea = sum . map area","label":"Open in editor"},{"action":null,"detail":"totalArea = sum . map area","label":"Source line 15"}],"kind":"list","title":"Reference: src/Shapes.hs:15:23"},"omitted":0,"page":"dc9aa20474bce109f13646b27440b8862faec3e91ae958ba","report":{"bufferId":1,"column":10,"definitions":{"count":1,"status":"available"},"hover":{"status":"available"},"line":9,"omitted":0,"path":"/sandbox/hide/test/inspector-fixture/app/Main.hs","references":{"count":7,"status":"available"},"revision":0,"symbol":"area"},"view":"hide.site.source","views":[{"current":true,"id":"hide.site.source","title":"Source"}]}}
+agent open reference location src/Shapes.hs:15:23: {"ok":true,"value":{"location":{"column":23,"line":15,"path":"/sandbox/hide/test/inspector-fixture/src/Shapes.hs","text":"totalArea = sum . map area","verified":true},"page":"dc9aa20474bce109f13646b27440b8862faec3e91ae958ba"}}
 agent forged page token: {"ok":false,"error":"\"Unknown or expired page. Run inspect again.\""}
 agent inspect a private buffer: {"ok":false,"error":"\"This buffer is private to the user.\""}
 agent inspect position without a symbol: {"ok":false,"error":"\"No symbol at that position.\""}
@@ -1556,6 +1587,6 @@ agent inspect position without a symbol: {"ok":false,"error":"\"No symbol at tha
  ▶ Watches             ║                                                                                               ░
  ▶ Agents              ║                                                                                               ▼
                        ╚═ 9:13 ◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
- F1 Help | Running menu action…                                                                THC ▼  │ main* +9193 -40 
+ F1 Help | Running menu action…                                                                THC ▼  │ main* +7292 -12 
 agent old page after the buffer was edited: {"ok":false,"error":"\"Unknown or expired page. Run inspect again.\""}
 agent inspect with the old revision: {"ok":false,"error":"\"Buffer revision changed.\""}
