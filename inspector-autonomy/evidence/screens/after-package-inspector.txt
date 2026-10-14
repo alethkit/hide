@@ -1,0 +1,40 @@
+  File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
+                   [←] ╔═[■]═══════════════════════════════ longtree — 1 components ════════════════════════════2═[↑]══╗
+ ├📁 dir32            ▲║lib:longtree                                                                                   ║
+ ├📁 dir33            ░║                                                                                               ║
+ ├📁 dir34            ░║                                                                                               ║
+ ├📁 dir35            ░║                                                                                               ║
+ ├📁 dir36            ░║                                                                                               ║
+ ├📁 dir37            ░║                                                                                               ║
+ ├📁 dir38            ░║                                                                                               ║
+ ├📁 dir39            ░║                                                                                               ║
+ ├📁 dir40            ░║ Details ──────────────────────────────────────────────────────────────────────────────────────║
+ ├📁 dir41            ░║library, buildable                                                                             ▲
+ ├📁 dir42            ░║not runnable                                                                                   █
+ ├📁 dir43            ░║1 unconditional declarations                                                                   ░
+ ├📁 dir44            ░║0 conditional branches not shown here                                                          ░
+ ├📁 dir45            ░║                                                                                               ░
+ ├📁 dir46            ░║                                                                                               ░
+ ├📁 dir47            ░║                                                                                               ░
+ ├📁 dir48            ░║                                                                                               ░
+ ├📁 dir49            ░║                                                                                               ░
+ ├📁 dir50            ░║                                                                                               ░
+ ├📁 dir51            ░║                                                                                               ░
+ ├📁 dir52            ░║                                                                                               ░
+ ├📁 dir53            ░║                                                                                               ░
+ ├📁 dir54            ░║                                                                                               ░
+ ├📁 dir55            ░║                                                                                               ░
+ ├📁 dir56            ░║                                                                                               ░
+ ├📁 dir57            ░║                                                                                               ░
+ ├📁 dir58            ░║                                                                                               ░
+ ├📁 dir59            ░║                                                                                               ░
+ ├📁 dir60            ░║                                                                                               ░
+ ├📁 src              ░║                                                                                               ░
+ └📄 longtree.cabal   ░║                                                                                               ░
+ ▶ Sessions           ░║                                                                                               ░
+ ▶ Debug              ░║                                                                                               ░
+ ▶ Watches            ░║                                                                                               ░
+ ▶ Agents             █║                                                                                               ░
+ ▶ longtree           ▼║                                                                                               ▼
+                       ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
+ F1 Help | Opening sidebar target…                                                                                THC ▼ 

@@ -26,6 +26,15 @@ bridge one call at a time through `hide-session.mjs`; every call and response is
   no scrollbar and no hint that Sessions/Agents/package sections exist (`evidence/screens/before-long-files.txt`).
   A user who does not already know to wheel/focus+End cannot know packages are there. There is also no
   section-level navigation: moving by section means paging through every Files row.
+* **Live keys never reached the hard-coded tree handler.** With the compiled keybindings present (every real
+  editor), `dispatchEvent` consults bindings first (`Model.hs:2151`) and only unbound keys fall through to the
+  tree handler (`Model.hs:2200`). The sidebar binding context maps Up/Down/PageUp/PageDown/Enter/Left/Right only, so
+  in a live editor with a source open `Home`, `End` and `Ctrl+Down` did nothing in the focused sidebar (observed in
+  the session: End after focusing a Files row left the view unchanged; PageDown scrolled). Unit tests built without
+  bindings had hidden this.
+* **Scroll offsets could outlive their rows.** Collapse, projection adoption and window growth did not clamp
+  `treeScroll` to the new limit (`Model.hs:4881`), unlike the messages-panel resize (existing clamp), so scrolling to
+  the end and then collapsing Files left the viewport past the end of a short list.
 * HLS on hide itself does not work out of the box (see OPEN_QUESTIONS.md): the plain `cabal.project`
   cannot be solved offline without `-f-terminal` (no libghostty-vt pkg-config), so HLS reports
   `No handler for: SMethod_TextDocument…`.
@@ -42,12 +51,17 @@ existing scroll discoverable and section-aware:
    and it is a click target that scrolls the next hidden section root to the top of the sidebar (clamped by the scroll limit).
    Row 1 holds no tree row, so the cue never covers a tree row and never disturbs hit testing, selection
    visibility or keyboard scrolling.
-3. **Keyboard**: `Ctrl+Down` / `Ctrl+Up` in the focused tree jump the selection to the next / previous section
-   root (existing `selectTreeRow` keeps the selection visible). `End`, `PageDown` and the wheel already work.
-4. Cost model (AGENTS.md): the cue needs the number of root rows at index ≥ end of viewport. Roots have
+3. **Keyboard**: new bindable commands in the `sidebar` context — `hide.sidebar.next-section` (`Ctrl+Down`),
+   `hide.sidebar.previous-section` (`Ctrl+Up`), `hide.sidebar.first` (`Home`), `hide.sidebar.last` (`End`) — plus the
+   same keys in the hard-coded handler for binding-less desktops. Selection moves through `selectTreeRow`, which keeps it
+   visible, so stale-action protection (`hitCurrent`) is untouched.
+4. **Valid offsets**: `fitTreeScroll` clamps `treeScroll` to the limit after collapse, projection adoption, provider
+   retirement and window resize. Shrinking a window deliberately does not chase the selection: the cue says what is
+   below and one click reaches it.
+5. Cost model (AGENTS.md): the cue needs the number of root rows at index ≥ end of viewport. Roots have
    singleton addresses `[i]`; `M.lookupIndex [i] treeRows` is O(log n) and there are ≤32 roots, so the cue is
    ≤32 logarithmic lookups per painted frame and is derived from state already in `SidebarKey`
-   (rows identity, scroll, screen height) — no new Desktop field, no full-tree traversal, no text comparison.
+   (rows identity, scroll, revision, screen size via the render key) — no new Desktop field, no full-tree traversal, no text comparison.
    Stale-action protection is untouched: scroll commands only change `treeScroll`/`treeSelected` via
    `scrollTreeTo`/`selectTreeRow`, and activation still goes through `hitCurrent` generation checks.
 

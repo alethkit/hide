@@ -1,0 +1,35 @@
+{
+  "reproduced": true,
+  "fixed": true,
+  "renderedUiVerified": true,
+  "packageInspected": true,
+  "regressionChecksKept": true,
+  "rendered": { "viewport": "120x40", "packageName": "longtree", "fixture": "/sandbox/longtree-fixture (60 top-level dirs + src + longtree.cabal) for the session screens; test/inspector-sidebar-scroll.mjs generates its own fixture with 64 dirs and scrolltree.cabal" },
+  "investigation": {
+    "hlsOnHide": false,
+    "hlsFailure": "HLS: No handler for: SMethod_TextDocumentHover (also DocumentSymbol/Definition/References). CLI probe: 'Could not resolve dependencies ... rejecting: hide:+terminal (conflict: pkg-config package libghostty-vt-any, not found in the pkg-config database) ... hide:-terminal (manual flag can only be changed explicitly)' and, with the default cache, '/home/node/.cache/hie-bios: createDirectory: permission denied'. An uncommitted hie.yaml/cabal.project.hls with -terminal made the CLI succeed but the editor's HLS still answered 'No handler for'.",
+    "findings": [
+      { "claim": "Every sidebar section is a root in one flat Seq (treeRoots) projected into one indexed row map, so a long Files subtree pushes every later section, including the package, below the viewport; there is no per-section row budget.", "location": "src/Hide/Sidebar.hs:62" },
+      { "claim": "A single scroll offset treeScroll applies to the whole flat list; sections have no scroll state of their own.", "location": "src/Hide/Sidebar.hs:61" },
+      { "claim": "The projection places roots in publication order and computes row addresses; the package root is published by PackageSidebar after the Files/Sessions/Agents roots, so it is always below Files.", "location": "src/Hide/Sidebar.hs:252" },
+      { "claim": "The package provider's root node is a plain collapsed branch node with the package title, giving it no priority or pinned position in the sidebar.", "location": "src/Hide/PackageSidebar.hs:280" },
+      { "claim": "The viewport height is the screen height minus 4 and the messages panel, shared by all sections; the scroll limit is rows minus that height.", "location": "src/Hide/Model.hs:4874" },
+      { "claim": "Before the fix the scrollbar was drawn only while the tree was focused (the guard was `treeFocused tree, visible>=3`), so an unfocused sidebar showed no cue that more sections existed; the guard now also accepts any overflow.", "location": "src/Hide/Render.hs:990" },
+      { "claim": "Wheel events already scrolled the sidebar by three rows without taking focus, so reachability existed but was undiscoverable.", "location": "src/Hide/Model.hs:4903" },
+      { "claim": "Key events consult the compiled keybindings first; only unbound keys reach the hard-coded treeKey, so Home/End/Ctrl+Down did nothing in a live sidebar until they became bindable sidebar commands.", "location": "src/Hide/Model.hs:2151" }
+    ]
+  },
+  "commands": {
+    "build": "cabal build all --offline -j2 -f-window -f-web -f-terminal",
+    "tests": "cabal test hide:test:inspector-checks --offline -j2 -f-window -f-web -f-terminal --test-show-details=direct",
+    "ui": "node test/inspector-ui-smoke.mjs && node test/inspector-sidebar-scroll.mjs"
+  },
+  "limitations": [
+    "Only the remote display protocol path was exercised; native window, web and terminal frontends were built disabled (-f-window -f-web -f-terminal).",
+    "HLS on hide itself did not work, so no definitions or references were followed through HLS.",
+    "The full editor-tests suite (SidebarCheck, BindingsCheck, ProtocolCheck, AccessibilityCheck) was not run; it covers code touched by this change.",
+    "No per-frame allocation baseline was measured; added render work is bounded to about 33 ordered-map lookups per frame while the tree overflows.",
+    "The accessibility tree does not announce the new cue.",
+    "The sandbox has about 2 GB RAM; compiling Hide.Model needs most of it, so builds must run with no concurrent editor session."
+  ]
+}

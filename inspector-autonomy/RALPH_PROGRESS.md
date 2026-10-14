@@ -1,9 +1,10 @@
 # Progress
 
-## Iteration 1
-Done: built fixture `/sandbox/longtree-fixture` (60 dirs + `longtree.cabal`); real editor session at 120x40;
-tools/list + 20+ registered tool calls; `before-long-files` screen recorded on the unfixed build; diagnosis in DESIGN.md.
-HLS on hide: root cause found (cabal cannot solve default flags offline), uncommitted hie.yaml experiment did not
-make the editor's HLS answer; recorded in OPEN_QUESTIONS.md.
-Next: implement cue/scrollbar/Ctrl+Up/Down (Render.hs, Model.hs, Sidebar.hs), SidebarScrollCheck in inspector-checks,
-`test/inspector-sidebar-scroll.mjs`, docs, rebuild, after-screens, RESULTS.md, evidence.json.
+## Iteration 1 (complete)
+Done: diagnosis with the live tools (23 calls/10 tools), before screen on the unfixed build, fix (section cue,
+unfocused scrollbar, Ctrl+Up/Down/Home/End commands, scroll clamping), SidebarScrollCheck in inspector-checks,
+`test/inspector-sidebar-scroll.mjs`, docs, after screens on the fixed build, DESIGN/RESULTS/OPEN_QUESTIONS/evidence.json.
+Verified: build, inspector-checks, old smoke, new script all pass; no session left running.
+Failing evidence: none known. HLS on hide did not work (documented, hlsOnHide=false).
+Next action: none required; if a later iteration runs, re-run the gate and, if memory allows, the editor-tests sidebar
+suites (SidebarCheck/BindingsCheck/ProtocolCheck) which were not run.
