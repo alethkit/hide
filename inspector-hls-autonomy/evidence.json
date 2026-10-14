@@ -1,0 +1,33 @@
+{
+  "hlsOnHide": true,
+  "agentInvestigation": true,
+  "definitionFollowed": true,
+  "referenceFollowed": true,
+  "backVerified": true,
+  "renderedUiVerified": true,
+  "regressionChecksKept": true,
+  "hlsSetup": {
+    "files": ["hie.yaml", "cabal.project.hls", "tools/hls-env.sh", "docs/haskell.md", "test/inspector-hls-hide.mjs"],
+    "summary": "HLS failed on hide because cabal repl could not solve the default terminal flag (hie.yaml now selects cabal.project.hls with -window -web -terminal), ~/.cache is read-only (writable XDG_CACHE_HOME), session tools relocate XDG_*_HOME (CABAL_CONFIG keeps the real store and index) and editor plus HLS exceeded RAM (GHCRTS='-A16m -c'). tools/hls-env.sh prints the three variables; launch with THC_EDIT_HLS=/sandbox/hls-ghcup/bin/haskell-language-server-wrapper and GHC_BIN=/home/node/.ghcup/bin/ghc."
+  },
+  "investigation": {
+    "symbol": "sectionIndices",
+    "inspectedAt": "src/Hide/Sidebar.hs:118:59",
+    "definition": "src/Hide/Sidebar.hs:111",
+    "references": ["src/Hide/Sidebar.hs:110", "src/Hide/Sidebar.hs:118", "src/Hide/Sidebar.hs:125"],
+    "explanation": "sectionIndices is defined at src/Hide/Sidebar.hs:111 (signature at line 110): it returns the row indices of the sidebar's top-level section headers by repeatedly taking the smallest remaining key of the ordered tree-row map and skipping that section's whole subtree with one lookupGT, so it costs one logarithmic step per section (at most 32) and never walks the rows. HLS reported four references: the signature (src/Hide/Sidebar.hs:110), the definition itself, hiddenSections at src/Hide/Sidebar.hs:118 and adjacentSection at src/Hide/Sidebar.hs:125. hiddenSections drops the section headers that already lie inside the viewport (dropWhile (<start+count)), which is what feeds the 'more sections below' cue, while adjacentSection uses the same list to find the next or previous header for Ctrl+Up/Down navigation. Both consumers therefore share one bounded index computation, which matters for the AGENTS.md rule that interaction must not do whole-structure work: changing the cap or the ordering in the definition at line 111 changes the cue and the keyboard stepping together. The agent saw this by inspecting from the use at line 118, following the definition, going Back, then following the use at line 125 and going Back again; every location was verified against the checkout."
+  },
+  "commands": {
+    "build": "cabal build --offline -j1 -f-window -f-web -f-terminal exe:hide (up to date); cabal test --offline -j1 -f-window -f-web -f-terminal inspector-checks (PASS)",
+    "tests": "node test/inspector-hls-hide.mjs (PASS, writes /sandbox/hide-hls-scripted-check.json); node test/inspector-ui-smoke.mjs (19 PASS); node test/inspector-sidebar-scroll.mjs (PASS)",
+    "ui": "GHCRTS='-A16m -c' node inspector-hls-autonomy/hide-session.mjs start --size=120x40 --env XDG_CACHE_HOME=/sandbox/hls-cache/cache --env CABAL_CONFIG=/sandbox/hls-cache/cabal-config src/Hide/Sidebar.hs; then one call per shell command (see evidence/tool-calls.jsonl seq 91-134)"
+  },
+  "limitations": [
+    "The setup needs about 1.5 GB of free RAM; on this 2 GB, no-swap machine the editor and HLS together leave little headroom and an earlier session lost its language server to the kernel OOM killer before GHCRTS was applied.",
+    "The first HLS run on a fresh cradle compiles hide's local packages and takes minutes; the documented warm-up should run before the editor.",
+    "Only the small leaf module src/Hide/Sidebar.hs was investigated; Hide.Model and Hide.Render were not loaded into HLS (memory) and are NOT verified.",
+    "The terminal frontend was never built (libghostty-vt absent), so HLS sees hide with -window -web -terminal and code under those flags is not analysed.",
+    "The status bar keeps the text 'Inspecting sectionIndices…' after the inspector window opened (cosmetic, observed in the screens); it was not investigated.",
+    "Locations were verified for the Sidebar module only; the References view includes the type signature and the definition line itself as HLS returns them."
+  ]
+}

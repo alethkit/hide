@@ -1,0 +1,40 @@
+  File  Edit  Search  Run  Compile  Debug  Tools  Options  Window  Help                                                 
+ ↓ 5 more sections [←] ╔═[■]═════════════════════ sectionIndices — src/Hide/Sidebar.hs:118:59 ══════════════════2═[↑]══╗
+ ▼ Files              ▲║Symbol                                                                                         ║
+ ├📁 .git             █║Type                                                                                           ║
+ ├📁 .github          ░║Definitions: 1                                                                                 ║
+ ├📁 .ralph-runner    ░║References: 4                                                                                  ║
+ ├📁 app              ░║→ Definitions view                                                                             ║
+ ├📁 assets           ░║→ References view                                                                              ║
+ ├📁 bin              ░║                                                                                               ║
+ ├📁 cbits            ░║                                                                                               ║
+ ├📁 dist-newstyle    ░║ Details ──────────────────────────────────────────────────────────────────────────────────────║
+ ├📁 docs             ░║sectionIndices :: Sidebar → [Int] Go to [Sidebar](file:///sandbox/hide/src/Hide/Sidebar.hs#L59)▲
+ ├📁 inspector-autonom░║                                                                                               █
+ ├📁 inspector-finish ░║                                                                                               ░
+ ├📁 inspector-hls-aut░║                                                                                               ░
+ ├📁 inspector-spec   ░║                                                                                               ░
+ ├📁 inspector-workflo░║                                                                                               ░
+ ├📁 nix              ░║                                                                                               ░
+ ├📁 packages         ░║                                                                                               ░
+ ├📁 plugins          ░║                                                                                               ░
+ ├📁 skills           ░║                                                                                               ░
+ ├📁 src              ░║                                                                                               ░
+ ├📁 test             ░║                                                                                               ░
+ ├📁 tools            ░║                                                                                               ░
+ ├📄 .gitignore       ░║                                                                                               ░
+ ├📄 AGENTS.md        ░║                                                                                               ░
+ ├📄 cabal.project    ░║                                                                                               ░
+ ├📄 cabal.project.hls░║                                                                                               ░
+ ├📄 CODE_OF_CONDUCT.m░║                                                                                               ░
+ ├📄 codecov.yml      ░║                                                                                               ░
+ ├📄 flake.lock       ░║                                                                                               ░
+ ├📄 flake.nix        ░║                                                                                               ░
+ ├📄 hide.cabal       ░║                                                                                               ░
+ ├📄 hie.yaml         ░║                                                                                               ░
+ ├📄 LICENSE.md       ░║                                                                                               ░
+ ├📄 Makefile         ░║                                                                                               ░
+ ├📄 README.md        ░║                                                                                               ░
+ └📄 REUSE.toml       ▼║                                                                                               ▼
+                       ╚═◄█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░►═╝
+ F1 Help | Inspecting sectionIndices…                                                            THC ▼  │ main* +664 -4 
