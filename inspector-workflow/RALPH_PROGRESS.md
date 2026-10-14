@@ -22,3 +22,7 @@ Only the real-HLS run. If HLS appears: run script, fix real-HLS-specific issues 
 ## Iteration 3
 Re-checked once (PATH, THC_EDIT_HLS, ~/.ghcup/bin, cabal store/packages for ghcide/hls): still no HLS. No new work possible
 without external input. Not emitting WORKFLOW_COMPLETE. Next: provide HLS, run the acceptance script.
+
+## Iteration 4
+Only checked PATH/THC_EDIT_HLS again (still absent). No new work possible. Not emitting WORKFLOW_COMPLETE.
+Next: provide HLS (GHC 9.14.1) on PATH or THC_EDIT_HLS, run `node test/inspector-symbol-workflow.mjs`, commit evidence.json.
