@@ -1,4 +1,4 @@
-# RALPH progress — symbol inspection workflow (iteration 2)
+# RALPH progress — symbol inspection workflow (iteration 3)
 
 ## HLS blocker (probed once; do not repeat)
 No real HLS on box (PATH, $THC_EDIT_HLS, ~/.ghcup/{bin,hls}, fs-wide name search; /opt unreadable). No downloads.
@@ -18,3 +18,7 @@ Pure semantics, host, tool, UI wiring, fixture, SymbolInspectorCheck, acceptance
 docs (haskell.md, agent-tools.md, README), DESIGN/RESULTS/OPEN_QUESTIONS.
 ## Next
 Only the real-HLS run. If HLS appears: run script, fix real-HLS-specific issues (OPEN_QUESTIONS P2 hypotheses).
+
+## Iteration 3
+Re-checked once (PATH, THC_EDIT_HLS, ~/.ghcup/bin, cabal store/packages for ghcide/hls): still no HLS. No new work possible
+without external input. Not emitting WORKFLOW_COMPLETE. Next: provide HLS, run the acceptance script.
