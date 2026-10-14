@@ -24,7 +24,7 @@
 -- scoped 'W.openWindow'/'adoptWindowUpdate' path.
 module Hide.InspectorWindow
   ( Inspector, withInspector, inspectorViews, inspectorPublisher'
-  , RowAction(..), Page(..), buildPage, inspectSubject, pageAction, setOpenMenu
+  , RowAction(..), Page(..), buildPage, inspectSubject, followInspectorRow, pageAction, setOpenMenu
   ) where
 
 import Control.Monad (filterM)
@@ -39,7 +39,7 @@ import qualified Hide.Plugin.Tree as Tree
 import qualified Hide.Plugin.Window as W
 
 -- | What a row does when activated. It is closed data, never a callback.
-data RowAction = Navigate !Subject | ShowView !Subject !ViewId | OpenPath !FilePath
+data RowAction = Navigate !Subject | ShowView !Subject !ViewId | OpenPath !FilePath | GoBack
   deriving (Eq,Show)
 
 -- | A prepared window and the exact actions of its rows.
@@ -48,7 +48,7 @@ data Page = Page { pageWindow :: !W.PreparedWindow, pageActions :: !(M.Map Tree.
 -- | The registry, window publication scope and live page tables of one session.
 data Inspector = Inspector
   { inspectorViews :: !Inspectors, inspectorScope :: !W.WindowScope
-  , inspectorPages :: !(IORef [(W.WindowRef,M.Map Tree.NodeId RowAction)])
+  , inspectorPages :: !(IORef [(W.WindowRef,(M.Map Tree.NodeId RowAction,[(Subject,Maybe ViewId)]))])
   , inspectorMenu :: !(IORef [Menu.MenuRef]) }
 
 -- | Scope the registry and its window lifetimes. Closing retires every escaped
@@ -74,21 +74,25 @@ pageAction :: Inspector -> W.WindowRef -> Tree.NodeId -> IO (Maybe RowAction)
 pageAction inspector reference node=do
   live<-W.windowRefCurrent reference
   pages<-readIORef (inspectorPages inspector)
-  pure (if live then lookup reference pages >>= M.lookup node else Nothing)
+  pure (if live then lookup reference pages >>= M.lookup node . fst else Nothing)
 
 -- | Build the rows window for one object and view. @views@ are the other
 -- applicable views, offered as navigation rows after the document's own.
 buildPage :: [Menu.MenuRef] -> Subject -> Text -> [ViewInfo] -> PreparedDoc -> IO (Either Text Page)
-buildPage refs subject currentTitle others prepared=do
+buildPage refs subject currentTitle others prepared=buildPageWithBack refs subject currentTitle others prepared False
+
+buildPageWithBack :: [Menu.MenuRef] -> Subject -> Text -> [ViewInfo] -> PreparedDoc -> Bool -> IO (Either Text Page)
+buildPageWithBack refs subject currentTitle others prepared hasBack=do
   let docRows=case preparedDoc prepared of
         List _ items->[(itemLabel item,itemDetail item,fmap action (itemTarget item)) | item<-items]
         Text blocks->[(heading,body,Nothing) | (heading,body)<-textRows blocks]
       viewRows=[("→ "<>T.take 200 (infoTitle view)<>" view","Show the "<>infoTitle view<>" view of this "<>typeName<>".",Just (ShowView subject (infoView view)))
                | view<-take 8 others]
-      room=64-length viewRows
+      backRows=[("← Back","Return to the previous inspected object.",Just GoBack) | hasBack]
+      room=64-length viewRows-length backRows
       kept=if length docRows<=room then docRows
             else take (room-1) docRows++[("… more rows","Some rows are not shown.",Nothing)]
-      rows=(if null kept && null viewRows then [("No content","This view produced no rows.",Nothing)] else kept)++viewRows
+      rows=(if null kept && null viewRows then [("No content","This view produced no rows.",Nothing)] else kept)++viewRows++backRows
       title=case preparedDoc prepared of
         List heading _ | not (T.null heading)->heading
         _->typeName<>" · "<>currentTitle
@@ -125,7 +129,12 @@ textRows=map finish . reverse . foldl accumulate []
 -- unadopted window. Queries run only for human origins and only while their
 -- command registration is current; every document is bounded and forced here.
 inspectSubject :: Inspector -> InspectContext -> Subject -> Maybe ViewId -> IO (Either Text W.WindowUpdate)
-inspectSubject inspector context subject requested=do
+inspectSubject inspector context subject requested=inspectWithHistory inspector context subject requested []
+
+-- History belongs to the exact page, never a session-global current object.
+-- It retains at most 32 typed locations; revisiting always resolves live roots.
+inspectWithHistory :: Inspector -> InspectContext -> Subject -> Maybe ViewId -> [(Subject,Maybe ViewId)] -> IO (Either Text W.WindowUpdate)
+inspectWithHistory inspector context subject requested history=do
   available<-applicableViews (inspectorViews inspector) subject
   refs<-readIORef (inspectorMenu inspector)
   case (requested,available) of
@@ -147,7 +156,7 @@ inspectSubject inspector context subject requested=do
       case prepared of
         Left err->pure (Left (T.pack (show err)))
         Right ready->do
-          built<-buildPage refs subject title others ready
+          built<-buildPageWithBack refs subject title others ready (not (null history))
           case built of
             Left err->pure (Left err)
             Right (Page window actions)->do
@@ -158,4 +167,29 @@ inspectSubject inspector context subject requested=do
     remember reference actions=do
       pages<-readIORef (inspectorPages inspector)
       live<-filterM (W.windowRefCurrent . fst) pages
-      writeIORef (inspectorPages inspector) (take 64 ((reference,actions):live))
+      writeIORef (inspectorPages inspector) (take 64 ((reference,(actions,take 32 ((subject,requested):history))):live))
+
+-- | Follow an exact live row, preserving history across navigation and view
+-- switches. Back consumes one location, so it cannot create a Back/Back loop.
+followInspectorRow :: Inspector -> InspectContext -> W.WindowRef -> Tree.NodeId -> IO (Either Text W.WindowUpdate)
+followInspectorRow inspector context reference node
+  | inspectOrigin context/=Menu.HumanMenu=pure (Left "Inspector navigation requires human input.")
+  | otherwise=do
+      action<-pageAction inspector reference node
+      pages<-readIORef (inspectorPages inspector)
+      let trail=maybe [] snd (lookup reference pages)
+      case action of
+        Just (Navigate subject)->enter subject Nothing trail
+        Just (ShowView subject view)->enter subject (Just view) (drop 1 trail)
+        Just GoBack->case drop 1 trail of
+          (subject,view):earlier->enter subject view earlier
+          []->pure (Left "No earlier inspector location.")
+        Just (OpenPath _)->pure (Left "Open files from the Files or Package tree.")
+        Nothing->pure (Left "Inspector row expired; reopen it.")
+  where
+    enter subject view earlier=do
+      resolved<-resolve (inspectorViews inspector) subject
+      case resolved of
+        Gone->pure (Left "That object no longer exists; reopen the inspector.")
+        RootRetired->pure (Left "That object's source is no longer available.")
+        Fresh current->inspectWithHistory inspector context current view earlier

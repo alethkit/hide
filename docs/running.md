@@ -98,8 +98,10 @@ Alternatively, expand the package row, right-click a component such as
 Select an inspector row to read its **Details**. Right-click a component or
 source declaration and choose **Open** to inspect that object in another window.
 Use the same **Open** action on **→ Declaration view** or **→ Sources view** to
-switch the view of a component. Selecting a row alone changes its Details; it
-does not navigate.
+switch the view of a component. Every page reached by navigation or a view
+switch ends with **← Back** (Open it the same way); Back re-resolves the earlier
+object from its live package, so it refuses cleanly if that object has gone.
+Selecting a row alone changes its Details; it does not navigate.
 
 These views describe Cabal declarations. Conditional branches are counted but
 are not flattened into the unconditional source list. Source declaration rows

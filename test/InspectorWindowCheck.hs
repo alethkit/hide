@@ -26,6 +26,7 @@ import Hide.PackageInspect
 import Hide.PackageSources
 import Hide.Plugin.Command
 import Hide.Plugin.Inspect
+import Hide.Plugin.Inspect.JSON
 import Hide.Plugin.Menu (MenuOrigin(..))
 import qualified Hide.Plugin.Tree as Tree
 import qualified Hide.Plugin.Window as W
@@ -145,6 +146,8 @@ checks=do
       _<-publishViews publisher (attach "hide.test.queries" [queried :: ViewDef PackageSources])
       (_,queriedWindow)<-inspectSubject inspector human top (Just (viewIdOf "hide.test.queried")) >>= adopted
       check "a human query is rendered like any other document" (take 3 (captions queriedWindow)==map sourceTarget (sourceComponents package))
+      jsonRefused<-openJSON views top (viewIdOf "hide.test.queried")
+      check "JSON never executes an effectful query" (either (T.isInfixOf "effectful") (const False) jsonRefused)
       refused<-inspectSubject inspector (InspectContext AgentMenu "/workspace" []) top (Just (viewIdOf "hide.test.queried"))
       check "an agent origin cannot run a query" (either (T.isInfixOf "human") (const False) refused)
       _<-retireCommand registry (commandRef command)
@@ -183,3 +186,4 @@ actionType :: RowAction -> Text
 actionType (Navigate subject)=T.pack (show (subjectType subject))
 actionType (ShowView subject _)=T.pack (show (subjectType subject))
 actionType (OpenPath _)="path"
+actionType GoBack="back"

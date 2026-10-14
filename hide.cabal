@@ -584,6 +584,9 @@ test-suite inspector-checks
   other-modules:
       PluginInspectCheck
     , InspectorWindowCheck
+    , InspectorSpecCheck
+    , InspectorExample.Summary
+    , InspectorExample.Counts
     , PackageSidebarCheck
   build-depends:
       hide

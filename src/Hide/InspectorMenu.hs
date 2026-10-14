@@ -47,20 +47,9 @@ definition inspector=CommandDef "hide.inspect.open" "Open inspector row" unit re
   else case invocationRow context of
     Nothing->pure (Left (CommandRejected "No inspector row was captured."))
     Just (reference,node)->do
-      found<-pageAction inspector reference node
       let sidebar=invocationSidebar context
           inspectContext=InspectContext (invocationOrigin context) (sidebarContextWorkspace sidebar) (sidebarPrivatePaths sidebar)
-      case found of
-        Nothing->pure (Left (CommandRejected "Inspector row expired; reopen it."))
-        Just (OpenPath _)->pure (Left (CommandRejected "Open files from the Files or Package tree."))
-        Just (Navigate subject)->enter inspectContext subject Nothing
-        Just (ShowView subject view)->enter inspectContext subject (Just view)
+      either (Left . CommandRejected) Right <$> followInspectorRow inspector inspectContext reference node
   where
     unit=Codec Null (const (Right ())) (const Null)
     result=Codec Null (const (Left "Inspector windows are host values.")) (const Null)
-    enter inspectContext subject view=do
-      resolved<-resolve (inspectorViews inspector) subject
-      case resolved of
-        Gone->pure (Left (CommandRejected "That object no longer exists; reopen the inspector."))
-        RootRetired->pure (Left (CommandRejected "That object's source is no longer available."))
-        Fresh current->either (Left . CommandRejected) Right <$> inspectSubject inspector inspectContext current view

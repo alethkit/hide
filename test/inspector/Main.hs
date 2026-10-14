@@ -10,9 +10,10 @@
 -- 'error', so a failure is a nonzero exit status.
 module Main (main) where
 
+import qualified InspectorSpecCheck
 import qualified InspectorWindowCheck
 import qualified PackageSidebarCheck
 import qualified PluginInspectCheck
 
 main :: IO ()
-main=PluginInspectCheck.checks >> InspectorWindowCheck.checks >> PackageSidebarCheck.checks
+main=InspectorSpecCheck.checks >> PluginInspectCheck.checks >> InspectorWindowCheck.checks >> PackageSidebarCheck.checks
