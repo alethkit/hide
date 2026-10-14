@@ -50,3 +50,9 @@ asserts the cue returns and one click reaches the package instead of relaxing th
 * No per-frame allocation baseline was measured (AGENTS.md asks for one). The added work is ≤33 `Map.lookupIndex`/
   `lookupGT` calls per painted frame and only while the tree overflows; HYPOTHESIS: well under the 2× budget.
 * No real-HLS run; `test/inspector-symbol-workflow.mjs` was not run.
+
+## Iteration 3 addendum: smoke race hardened
+One acceptance run of `test/inspector-ui-smoke.mjs` failed at "package context menu exposes Inspect" (6/6 and 3/3 reruns passed).
+HYPOTHESIS: the "collapse Files reveals package" step matched `▶ hide`, which is already on screen before the click, so a stale
+frame could let the next right-click land before the collapse. Only the precondition changed: that step now requires the collapsed
+`▶ Files` header before `▶ hide` (`/▶ Files[\s\S]*▶ hide/`). Labels and all assertions are unchanged; 3 consecutive passes afterwards.

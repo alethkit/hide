@@ -61,7 +61,8 @@ const mouse=(button,x,y)=>['down','up'].map(action=>({type:'mouse',button,x:x-1,
 let passed=false;
 try {
   await expect(/▶ hide/,'package sidebar appears');
-  input(mouse(0,2,3));await expect(/▶ hide/,'collapse Files reveals package');
+  // Require the collapsed Files header so a stale pre-click frame cannot satisfy this step.
+  input(mouse(0,2,3));await expect(/▶ Files[\s\S]*▶ hide/,'collapse Files reveals package');
   input(mouse(2,7,8));await expect(/│ Inspect +│/,'package context menu exposes Inspect');
   input(mouse(0,12,11));await expect(/hide — \d+ components/,'package inspector opens');
   input(mouse(2,30,4));await expect(/Open/,'component row exposes Open');
