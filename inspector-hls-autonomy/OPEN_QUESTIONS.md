@@ -1,6 +1,6 @@
 # Open questions
 
-No P0 or P1 items remain.
+No blocking (highest-severity) items remain.
 
 ## P2
 - Memory headroom: HLS plus the editor fit on this ~2 GB machine only with `GHCRTS='-A16m -c'` and a clean RAM-backed `/tmp`. A machine with less
