@@ -12,6 +12,10 @@ commands:
     run: timeout --signal=TERM --kill-after=10s 180s cabal test hide:test:inspector-checks --offline -j2 -f-window -f-web -f-terminal
     timeout: 210
     acceptance: true
+  - name: inspector_ui
+    run: node /sandbox/ralph-validation/inspector-ui-smoke.mjs
+    timeout: 90
+    acceptance: true
 ---
 # Finish the hide semantic inspector
 
@@ -24,8 +28,9 @@ Existing commits:
 
 Preserve all existing uncommitted changes.
 
-Read /sandbox/overnight/PROGRESS.md and
-/sandbox/overnight/OPEN_QUESTIONS.md before editing.
+Read /sandbox/hide/inspector-finish/RALPH_PROGRESS.md and
+/sandbox/hide/inspector-finish/OPEN_QUESTIONS.md before editing.
+These task-local files are the authoritative progress and open-issue records.
 
 ## Objectives
 
@@ -36,7 +41,8 @@ Read /sandbox/overnight/PROGRESS.md and
    menu commands, application and session.
 3. Build the project offline.
 4. Pass the bounded inspector test suite.
-5. Commit completed work and update PROGRESS.md.
+5. Run the inspector_ui acceptance check to verify the rendered interaction.
+6. Commit completed work and update the task-local RALPH_PROGRESS.md.
 
 ## Constraints
 
@@ -53,7 +59,7 @@ Do not claim success when tests fail or time out.
 
 Emit <promise>DONE</promise> only when the inspector is
 integrated, the build and inspector tests pass, and the
-implementation is committed.
+implementation is committed and the rendered UI acceptance check passes.
 
 Otherwise document blockers and continue until the iteration
 budget is exhausted.
